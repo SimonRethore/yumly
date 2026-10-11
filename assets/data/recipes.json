@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "isDemo": true,
+  "recipes": [
+    {
+      "id": "curry-lentilles-001",
+      "title": "Curry de lentilles corail",
+      "description": "Un plat parfumé et réconfortant, prêt en 45 minutes.",
+      "imageAsset": "assets/recipes/curry-lentilles.jpg",
+      "dietTypes": ["vegan", "vegetarian"],
+      "origin": "Indien",
+      "course": "plat",
+      "seasons": ["automne", "hiver"],
+      "months": [10, 11, 12, 1, 2, 3],
+      "difficulty": "facile",
+      "prepTimeMinutes": 15,
+      "cookTimeMinutes": 30,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "lentilles-corail", "name": "Lentilles corail", "quantity": 250, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "lait-coco", "name": "Lait de coco", "quantity": 400, "unit": "ml", "category": "epicerie_seche" },
+        { "ingredientId": "tomates-concassees", "name": "Tomates concassées en conserve", "quantity": 400, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "oignon", "name": "Oignon", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "ail", "name": "Gousse d’ail", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "gingembre", "name": "Gingembre frais", "quantity": 10, "unit": "g", "category": "fruits_legumes" },
+        { "ingredientId": "curry-poudre", "name": "Curry en poudre", "quantity": 2, "unit": "c_a_c", "category": "epices_condiments" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 1, "unit": "c_a_s", "category": "epicerie_seche" },
+        { "ingredientId": "coriandre", "name": "Coriandre fraîche", "category": "fruits_legumes", "quantityNote": "quelques brins" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Émincer l’oignon, hacher l’ail et râper le gingembre." },
+        { "order": 2, "text": "Faire revenir l’oignon dans l’huile 5 minutes, puis ajouter l’ail, le gingembre et le curry." },
+        { "order": 3, "text": "Ajouter les lentilles rincées, les tomates et le lait de coco.\nLaisser mijoter 25 minutes en remuant de temps en temps." },
+        { "order": 4, "text": "Saler, parsemer de coriandre et servir." }
+      ],
+      "equipment": ["Casserole", "Couteau", "Planche à découper", "Râpe"]
+    },
+    {
+      "id": "chili-sin-carne-002",
+      "title": "Chili sin carne",
+      "description": "La version végétale du grand classique, généreuse et épicée.",
+      "imageAsset": "assets/recipes/chili-sin-carne.jpg",
+      "dietTypes": ["vegan", "vegetarian"],
+      "origin": "Mexicain",
+      "course": "plat",
+      "seasons": ["automne", "hiver"],
+      "months": [10, 11, 12, 1, 2],
+      "difficulty": "moyen",
+      "prepTimeMinutes": 20,
+      "cookTimeMinutes": 45,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "haricots-rouges", "name": "Haricots rouges cuits", "quantity": 500, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "mais", "name": "Maïs doux", "quantity": 150, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "tomates-concassees", "name": "Tomates concassées en conserve", "quantity": 800, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "riz", "name": "Riz basmati", "quantity": 300, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "oignon", "name": "Oignon", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "ail", "name": "Gousse d’ail", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "poivron-rouge", "name": "Poivron rouge", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "cumin", "name": "Cumin moulu", "quantity": 1, "unit": "c_a_c", "category": "epices_condiments" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 2, "unit": "c_a_s", "category": "epicerie_seche" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Émincer l’oignon et l’ail, couper le poivron en dés." },
+        { "order": 2, "text": "Faire revenir le tout dans l’huile avec le cumin pendant 10 minutes." },
+        { "order": 3, "text": "Ajouter les tomates, les haricots égouttés et le maïs. Laisser mijoter 35 minutes." },
+        { "order": 4, "text": "Pendant ce temps, cuire le riz. Servir le chili avec le riz." }
+      ],
+      "equipment": ["Cocotte", "Casserole", "Couteau", "Planche à découper"]
+    },
+    {
+      "id": "veloute-potimarron-003",
+      "title": "Velouté de potimarron",
+      "description": "Une soupe douce et onctueuse pour les soirées d’automne.",
+      "imageAsset": "assets/recipes/veloute-potimarron.jpg",
+      "dietTypes": ["vegetarian"],
+      "origin": "Français",
+      "course": "entree",
+      "seasons": ["automne"],
+      "months": [9, 10, 11, 12],
+      "difficulty": "facile",
+      "prepTimeMinutes": 15,
+      "cookTimeMinutes": 30,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "potimarron", "name": "Potimarron", "quantity": 1, "unit": "kg", "category": "fruits_legumes" },
+        { "ingredientId": "oignon", "name": "Oignon", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "bouillon-legumes", "name": "Bouillon de légumes", "quantity": 0.75, "unit": "l", "category": "epicerie_seche" },
+        { "ingredientId": "creme-fraiche", "name": "Crème fraîche", "quantity": 20, "unit": "cl", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "beurre", "name": "Beurre", "quantity": 20, "unit": "g", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "poivre", "name": "Poivre", "category": "epices_condiments", "quantityNote": "au goût" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Laver le potimarron, retirer les graines et le couper en cubes (inutile de l’éplucher)." },
+        { "order": 2, "text": "Faire fondre le beurre et y faire revenir l’oignon émincé." },
+        { "order": 3, "text": "Ajouter le potimarron et le bouillon. Cuire 25 minutes à frémissement." },
+        { "order": 4, "text": "Mixer avec la crème, saler et poivrer." }
+      ],
+      "equipment": ["Faitout", "Mixeur plongeant", "Couteau"]
+    },
+    {
+      "id": "pates-champignons-004",
+      "title": "Pâtes crémeuses aux champignons",
+      "description": "Un plat express et gourmand pour les soirs pressés.",
+      "imageAsset": "assets/recipes/pates-champignons.jpg",
+      "dietTypes": ["vegetarian"],
+      "origin": "Italien",
+      "course": "plat",
+      "seasons": ["automne", "printemps"],
+      "months": [4, 5, 9, 10, 11],
+      "difficulty": "facile",
+      "prepTimeMinutes": 10,
+      "cookTimeMinutes": 15,
+      "restTimeMinutes": 0,
+      "defaultServings": 2,
+      "ingredients": [
+        { "ingredientId": "pates", "name": "Pâtes (tagliatelles)", "quantity": 200, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "champignons-paris", "name": "Champignons de Paris", "quantity": 250, "unit": "g", "category": "fruits_legumes" },
+        { "ingredientId": "creme-fraiche", "name": "Crème fraîche", "quantity": 150, "unit": "ml", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "parmesan", "name": "Parmesan", "quantity": 40, "unit": "g", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "ail", "name": "Gousse d’ail", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 1, "unit": "c_a_s", "category": "epicerie_seche" },
+        { "ingredientId": "persil", "name": "Persil", "category": "fruits_legumes", "quantityNote": "quelques brins" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Cuire les pâtes dans une grande casserole d’eau salée." },
+        { "order": 2, "text": "Émincer les champignons et les faire dorer à la poêle avec l’huile et l’ail." },
+        { "order": 3, "text": "Ajouter la crème et laisser réduire 3 minutes." },
+        { "order": 4, "text": "Mélanger avec les pâtes, parsemer de parmesan et de persil." }
+      ],
+      "equipment": ["Casserole", "Poêle", "Râpe"]
+    },
+    {
+      "id": "guacamole-005",
+      "title": "Guacamole",
+      "description": "Frais et acidulé, idéal à l’apéritif.",
+      "imageAsset": "assets/recipes/guacamole.jpg",
+      "dietTypes": ["vegan", "vegetarian"],
+      "origin": "Mexicain",
+      "course": "aperitif",
+      "seasons": ["ete"],
+      "months": [6, 7, 8, 9],
+      "difficulty": "facile",
+      "prepTimeMinutes": 10,
+      "cookTimeMinutes": 0,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "avocat", "name": "Avocat mûr", "quantity": 3, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "citron-vert", "name": "Citron vert", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "tomate", "name": "Tomate", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "oignon-rouge", "name": "Oignon rouge", "quantity": 0.5, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "coriandre", "name": "Coriandre fraîche", "category": "fruits_legumes", "quantityNote": "quelques brins" },
+        { "ingredientId": "piment-espelette", "name": "Piment d’Espelette", "quantity": 1, "unit": "pincee", "category": "epices_condiments" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Écraser la chair des avocats avec le jus du citron vert." },
+        { "order": 2, "text": "Ajouter la tomate en petits dés, l’oignon rouge finement haché et la coriandre." },
+        { "order": 3, "text": "Assaisonner avec le sel et le piment. Servir aussitôt." }
+      ],
+      "equipment": ["Saladier", "Fourchette", "Couteau"]
+    },
+    {
+      "id": "taboule-006",
+      "title": "Taboulé libanais",
+      "description": "Beaucoup d’herbes, un peu de boulgour : la fraîcheur à l’état pur.",
+      "imageAsset": "assets/recipes/taboule.jpg",
+      "dietTypes": ["vegan", "vegetarian"],
+      "origin": "Libanais",
+      "course": "entree",
+      "seasons": ["printemps", "ete"],
+      "months": [5, 6, 7, 8, 9],
+      "difficulty": "facile",
+      "prepTimeMinutes": 25,
+      "cookTimeMinutes": 0,
+      "restTimeMinutes": 30,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "boulgour", "name": "Boulgour fin", "quantity": 100, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "persil-plat", "name": "Persil plat (botte)", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "tomate", "name": "Tomate", "quantity": 3, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "oignon", "name": "Oignon", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "citron", "name": "Citron jaune", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "menthe", "name": "Menthe fraîche", "category": "fruits_legumes", "quantityNote": "quelques feuilles" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 4, "unit": "c_a_s", "category": "epicerie_seche" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Rincer le boulgour et le laisser gonfler dans le jus des citrons." },
+        { "order": 2, "text": "Ciseler finement le persil et la menthe. Couper les tomates et l’oignon en tout petits dés." },
+        { "order": 3, "text": "Mélanger le tout avec l’huile d’olive et laisser reposer 30 minutes au frais." }
+      ],
+      "equipment": ["Saladier", "Couteau", "Planche à découper", "Presse-agrumes"]
+    },
+    {
+      "id": "tarte-pommes-007",
+      "title": "Tarte fine aux pommes",
+      "description": "Croustillante et légèrement caramélisée.",
+      "imageAsset": "assets/recipes/tarte-pommes.jpg",
+      "dietTypes": ["vegetarian"],
+      "origin": "Français",
+      "course": "dessert",
+      "seasons": ["automne", "hiver"],
+      "months": [9, 10, 11, 12, 1, 2],
+      "difficulty": "moyen",
+      "prepTimeMinutes": 20,
+      "cookTimeMinutes": 35,
+      "restTimeMinutes": 0,
+      "defaultServings": 6,
+      "ingredients": [
+        { "ingredientId": "pate-feuilletee", "name": "Pâte feuilletée", "quantity": 1, "unit": "piece", "category": "produits_frais" },
+        { "ingredientId": "pomme", "name": "Pomme", "quantity": 4, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "sucre", "name": "Sucre", "quantity": 50, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "beurre", "name": "Beurre", "quantity": 30, "unit": "g", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "cannelle", "name": "Cannelle", "quantity": 1, "unit": "pincee", "category": "epices_condiments" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Préchauffer le four à 200 °C. Dérouler la pâte sur une plaque." },
+        { "order": 2, "text": "Éplucher les pommes et les couper en fines lamelles. Les disposer en rosace." },
+        { "order": 3, "text": "Parsemer de sucre, de cannelle et de noisettes de beurre." },
+        { "order": 4, "text": "Enfourner 35 minutes, jusqu’à ce que la pâte soit dorée." }
+      ],
+      "equipment": ["Four", "Plaque de cuisson", "Économe", "Couteau"]
+    },
+    {
+      "id": "crepes-008",
+      "title": "Crêpes de la Chandeleur",
+      "description": "La recette de base, à garnir selon vos envies.",
+      "imageAsset": "assets/recipes/crepes.jpg",
+      "dietTypes": ["vegetarian"],
+      "origin": "Français",
+      "course": "dessert",
+      "seasons": ["hiver"],
+      "months": [1, 2],
+      "difficulty": "facile",
+      "prepTimeMinutes": 10,
+      "cookTimeMinutes": 20,
+      "restTimeMinutes": 60,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "farine", "name": "Farine de blé", "quantity": 250, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "lait", "name": "Lait", "quantity": 50, "unit": "cl", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "oeuf", "name": "Œuf", "quantity": 3, "unit": "piece", "category": "produits_frais" },
+        { "ingredientId": "beurre", "name": "Beurre", "quantity": 50, "unit": "g", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "sucre", "name": "Sucre", "quantity": 30, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "sel", "name": "Sel", "quantity": 1, "unit": "pincee", "category": "epices_condiments" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Mélanger la farine, le sucre et le sel. Ajouter les œufs puis le lait petit à petit." },
+        { "order": 2, "text": "Incorporer le beurre fondu et laisser reposer la pâte 1 heure." },
+        { "order": 3, "text": "Cuire les crêpes une à une dans une poêle chaude légèrement beurrée." }
+      ],
+      "equipment": ["Saladier", "Fouet", "Poêle à crêpes", "Louche"]
+    }
+  ]
+}
