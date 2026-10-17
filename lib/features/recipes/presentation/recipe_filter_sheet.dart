@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/controlled_values.dart';
+import '../domain/origin_flags.dart';
 import '../domain/recipe_filters.dart';
 import 'recipes_controller.dart';
 
@@ -18,7 +19,10 @@ List<ActiveFilter> activeFilters(RecipeFilters f) => [
   for (final v in f.diets)
     ActiveFilter(v.label, (s) => s.copyWith(diets: toggled(s.diets, v))),
   for (final v in f.origins)
-    ActiveFilter(v, (s) => s.copyWith(origins: toggled(s.origins, v))),
+    ActiveFilter(
+      OriginFlags.label(v),
+      (s) => s.copyWith(origins: toggled(s.origins, v)),
+    ),
   for (final v in f.courses)
     ActiveFilter(v.label, (s) => s.copyWith(courses: toggled(s.courses, v))),
   for (final v in f.seasons)
@@ -138,7 +142,7 @@ class RecipeFilterSheet extends ConsumerWidget {
                   'Origine',
                   options.origins,
                   (s) => s.origins,
-                  (v) => v,
+                  OriginFlags.label,
                   (s, v) => s.copyWith(origins: v),
                 ),
                 family(

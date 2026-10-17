@@ -14,6 +14,7 @@ import '../../shopping_list/presentation/shopping_list_button.dart';
 import '../data/recipe_repository.dart';
 import '../domain/controlled_values.dart';
 import '../domain/ingredient.dart';
+import '../domain/origin_flags.dart';
 import '../domain/recipe.dart';
 import 'recipe_card.dart';
 
@@ -231,23 +232,39 @@ class _Criteria extends StatelessWidget {
     final months = recipe.months.toList()..sort();
     final seasons = recipe.seasons.toList()
       ..sort((a, b) => a.index.compareTo(b.index));
-    final items = <(IconData, String)>[
-      if (recipe.origin != null) (Icons.public, recipe.origin!),
+    final origin = recipe.origin;
+    final flag = origin == null ? null : OriginFlags.of(origin);
+    final items = <RecipeMeta>[
+      if (origin != null)
+        flag != null
+            ? RecipeMeta.emoji(emoji: flag, label: origin)
+            : RecipeMeta(icon: Icons.public, label: origin),
       for (final diet in DietType.values)
-        if (recipe.dietTypes.contains(diet)) (Icons.eco_outlined, diet.label),
-      if (recipe.course != null) (Icons.restaurant, recipe.course!.label),
+        if (recipe.dietTypes.contains(diet))
+          RecipeMeta(icon: Icons.eco_outlined, label: diet.label),
+      if (recipe.course != null)
+        RecipeMeta(icon: Icons.restaurant, label: recipe.course!.label),
       if (recipe.difficulty != null)
-        (Icons.signal_cellular_alt, recipe.difficulty!.label),
+        RecipeMeta(
+          icon: Icons.signal_cellular_alt,
+          label: recipe.difficulty!.label,
+        ),
       if (seasons.isNotEmpty)
-        (Icons.wb_sunny_outlined, seasons.map((s) => s.label).join(', ')),
+        RecipeMeta(
+          icon: Icons.wb_sunny_outlined,
+          label: seasons.map((s) => s.label).join(', '),
+        ),
       if (months.isNotEmpty)
-        (Icons.calendar_month_outlined, months.map(Months.label).join(', ')),
+        RecipeMeta(
+          icon: Icons.calendar_month_outlined,
+          label: months.map(Months.label).join(', '),
+        ),
     ];
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       children: [
-        for (final (icon, label) in items)
+        for (final item in items)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
@@ -255,7 +272,7 @@ class _Criteria extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.bordure),
             ),
-            child: RecipeMeta(icon: icon, label: label),
+            child: item,
           ),
       ],
     );

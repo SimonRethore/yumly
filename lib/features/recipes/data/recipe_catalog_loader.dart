@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +22,12 @@ class RecipeCatalogLoader {
   Future<Catalog> load() async {
     final String source;
     try {
-      source = await _bundle.loadString(catalogAsset);
+      // Décodage direct : au-delà de 50 Ko, loadString passe par un isolate,
+      // superflu pour cette taille et jamais terminé dans les tests de widgets.
+      final data = await _bundle.load(catalogAsset);
+      source = utf8.decode(
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+      );
     } catch (e) {
       throw CatalogException(['Fichier « $catalogAsset » introuvable ($e).']);
     }

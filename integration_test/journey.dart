@@ -39,7 +39,7 @@ Future<void> runEssentialJourney(
   expect(find.text('1 recette'), findsOneWidget);
   await _tapAndSettle(tester, find.byTooltip('Effacer la recherche'));
   await _tapAndSettle(tester, find.text('Filtres'));
-  await _tapAndSettle(tester, find.widgetWithText(FilterChip, 'Indien'));
+  await _tapAndSettle(tester, find.widgetWithText(FilterChip, '🇮🇳 Indien'));
   await _tapAndSettle(tester, find.text('Voir 1 recette'));
   expect(find.text('1 recette'), findsOneWidget);
 

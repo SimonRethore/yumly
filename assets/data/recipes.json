@@ -526,7 +526,7 @@
       "description": "Spécialité méditerranéenne de poivrons et tomates aux épices, avec des œufs cuits doucement dans la sauce.",
       "imageAsset": "assets/recipes/chakchouka.jpg",
       "dietTypes": ["vegetarian"],
-      "origin": "Maghrébin",
+      "origin": "Tunisien",
       "course": "plat",
       "seasons": ["ete"],
       "months": [6, 7, 8, 9],
@@ -610,6 +610,49 @@
       ],
       "equipment": ["Saladier", "Sauteuse", "Râpe"],
       "sourceUrl": "https://www.cuisineactuelle.fr/recettes/poulet-tikka-massala-recette-facon-indienne-106216"
+    },
+    {
+      "id": "porc-epice-mexicaine-riz-curcuma-017",
+      "title": "Porc épicé à la mexicaine & riz au curcuma",
+      "done": false,
+      "description": "Chair à saucisse aux épices mexicaines mijotée à la tomate, servie sur un riz au curcuma avec de l’avocat, de la coriandre et un filet de crème.",
+      "imageAsset": "assets/recipes/porc-epice-mexicaine-riz-curcuma.jpg",
+      "origin": "Mexicain",
+      "course": "plat",
+      "seasons": ["automne", "hiver", "printemps"],
+      "months": [9, 10, 11, 12, 1, 2, 3, 4, 5],
+      "difficulty": "facile",
+      "prepTimeMinutes": 15,
+      "cookTimeMinutes": 20,
+      "restTimeMinutes": 0,
+      "defaultServings": 2,
+      "ingredients": [
+        { "ingredientId": "oignon", "name": "Oignon", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "riz", "name": "Riz basmati", "quantity": 150, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "curcuma-poudre", "name": "Curcuma en poudre", "quantity": 1, "unit": "c_a_c", "category": "epices_condiments" },
+        { "ingredientId": "cube-bouillon-volaille", "name": "Cube de bouillon de volaille", "quantity": 1, "unit": "piece", "category": "epicerie_seche" },
+        { "ingredientId": "beurre", "name": "Beurre", "quantity": 10, "unit": "g", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "chair-a-saucisse", "name": "Chair à saucisse", "quantity": 250, "unit": "g", "category": "viandes_poissons" },
+        { "ingredientId": "epices-mexicaines", "name": "Épices mexicaines", "quantity": 3, "unit": "c_a_c", "category": "epices_condiments" },
+        { "ingredientId": "chair-tomates", "name": "Chair de tomates", "quantity": 400, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "avocat", "name": "Avocat", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "citron", "name": "Citron", "quantity": 0.5, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "coriandre", "name": "Coriandre fraîche", "category": "fruits_legumes", "quantityNote": "quelques brins" },
+        { "ingredientId": "creme-fraiche-epaisse", "name": "Crème fraîche épaisse", "quantity": 10, "unit": "cl", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 2, "unit": "c_a_s", "category": "epicerie_seche" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "poivre", "name": "Poivre", "category": "epices_condiments", "quantityNote": "au goût" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Délayer le cube de bouillon dans 35 cl d’eau chaude.\nCouper l’oignon en très fines demi-lunes." },
+        { "order": 2, "text": "Dans une casserole, faire fondre le beurre à feu moyen-vif. Y faire revenir le riz et le curcuma 1 minute en remuant.\nVerser le bouillon, couvrir et cuire à faible ébullition 12 à 15 minutes, jusqu’à absorption complète du bouillon. Remuer." },
+        { "order": 3, "text": "Pendant que le riz cuit, faire chauffer un filet d’huile d’olive dans une sauteuse à feu moyen-vif. Ajouter l’oignon, la chair à saucisse et 1 c. à c. d’épices mexicaines par personne (ça pique : doser selon votre goût).\nFaire dorer 3 à 4 minutes en émiettant la viande avec une spatule." },
+        { "order": 4, "text": "Quand le porc est bien coloré, ajouter la chair de tomates et prolonger la cuisson 2 à 3 minutes, jusqu’à ce que la sauce ait bien épaissi. Saler et poivrer." },
+        { "order": 5, "text": "Pendant ce temps, couper l’avocat en petits dés et le citron en quartiers.\nDans un bol, assaisonner l’avocat avec ½ c. à c. d’épices mexicaines par personne, un filet d’huile d’olive, quelques gouttes de jus de citron, du sel et du poivre.\nEffeuiller et ciseler la coriandre." },
+        { "order": 6, "text": "Disposer le riz au curcuma dans des assiettes creuses et présenter le porc à la tomate par-dessus.\nRépartir l’avocat, arroser d’un peu de crème et parsemer de coriandre." }
+      ],
+      "equipment": ["Casserole", "Sauteuse", "Bol", "Couteau", "Planche à découper"],
+      "sourceUrl": "https://www.hellofresh.fr/recipes/tacos-bowl-au-porc-hache-652d458d6720825b47fd8ad6"
     }
   ]
 }

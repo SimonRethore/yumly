@@ -5,6 +5,8 @@
 - Beignet de crevettes
 - Cake aux courgettes & chorizo : https://jow.fr/recipes/cake-aux-courgettes-et-chorizo-9bps2sb91si073zw0l6o
 - Cake salé au jambon et aux olives : https://www.marmiton.org/recettes/recette_cake-sale-au-jambon-et-aux-olives_18876.aspx
+- Feuilleté de saucisse
+- Préfou à l’ail
 - Salade de riz au surimi : https://jow.fr/recipes/salade-de-riz-au-surimi-8t7pc8jrbdmohqfn09l4
 - Samoussa
 
@@ -28,7 +30,6 @@
 - Paella
 - pate carbo
 - Pizza ???
-- Porc épicé à la mexicaine & riz au curcuma : https://www.hellofresh.fr/recipes/tacos-bowl-au-porc-hache-652d458d6720825b47fd8ad6
 - Porc sauté & tomates à la chinoise: https://www.hellofresh.fr/recipes/stir-fry-porc-and-tomates-a-la-chinoise-67d99aaedffcefea9daafbc4
 - Poulet basquaise : https://www.marmiton.org/recettes/recette_poulet-basquaise_16969.aspx
 - poulet mafé : https://jow.fr/recipes/poulet-facon-mafe-et-riz-8lqn6ri6lq3qi7930qzc

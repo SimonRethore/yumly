@@ -18,7 +18,7 @@ void main() {
         realCatalogLoader: true,
       );
 
-      expect(find.text('16 recettes'), findsOneWidget);
+      expect(find.text('17 recettes'), findsOneWidget);
       expect(find.textContaining('Catalogue de démonstration'), findsNothing);
       // Recettes d'automne-hiver : aussi présentes dans « De saison »
       // (horloge des tests au 10 octobre).
@@ -111,11 +111,11 @@ void main() {
     await tester.tap(find.text('Filtres'));
     await tester.pumpAndSettle();
     // Options issues du catalogue uniquement.
-    expect(find.widgetWithText(FilterChip, 'Mexicain'), findsOneWidget);
-    expect(find.widgetWithText(FilterChip, 'Japonais'), findsNothing);
+    expect(find.widgetWithText(FilterChip, '🇲🇽 Mexicain'), findsOneWidget);
+    expect(find.widgetWithText(FilterChip, '🇯🇵 Japonais'), findsNothing);
 
-    await tester.tap(find.widgetWithText(FilterChip, 'Mexicain'));
-    await tester.tap(find.widgetWithText(FilterChip, 'Indien'));
+    await tester.tap(find.widgetWithText(FilterChip, '🇲🇽 Mexicain'));
+    await tester.tap(find.widgetWithText(FilterChip, '🇮🇳 Indien'));
     await tester.pumpAndSettle();
     expect(find.text('Voir 3 recettes'), findsOneWidget);
 
@@ -136,7 +136,7 @@ void main() {
     await tester.tap(find.text('Voir 1 recette'));
     await tester.pumpAndSettle();
     expect(find.text('Filtres (3)'), findsOneWidget);
-    expect(find.widgetWithText(InputChip, 'Mexicain'), findsOneWidget);
+    expect(find.widgetWithText(InputChip, '🇲🇽 Mexicain'), findsOneWidget);
     expect(find.text('1 recette'), findsOneWidget);
 
     // Retirer un filtre ne réinitialise pas les autres.

@@ -54,11 +54,22 @@ class RecipeBadge extends StatelessWidget {
   }
 }
 
-/// Métadonnée icône + texte (durée, difficulté).
+/// Métadonnée icône + texte (durée, difficulté), ou emoji + texte (drapeau).
 class RecipeMeta extends StatelessWidget {
-  const RecipeMeta({super.key, required this.icon, required this.label});
+  const RecipeMeta({
+    super.key,
+    required IconData this.icon,
+    required this.label,
+  }) : emoji = null;
 
-  final IconData icon;
+  const RecipeMeta.emoji({
+    super.key,
+    required String this.emoji,
+    required this.label,
+  }) : icon = null;
+
+  final IconData? icon;
+  final String? emoji;
   final String label;
 
   @override
@@ -66,7 +77,12 @@ class RecipeMeta extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 16, color: AppColors.vertForet),
+        if (emoji != null)
+          ExcludeSemantics(
+            child: Text(emoji!, style: const TextStyle(fontSize: 16)),
+          )
+        else
+          Icon(icon, size: 16, color: AppColors.vertForet),
         const SizedBox(width: 4),
         Flexible(
           child: Text(label, style: Theme.of(context).textTheme.bodySmall),
