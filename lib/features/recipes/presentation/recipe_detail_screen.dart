@@ -280,48 +280,58 @@ class _Durations extends StatelessWidget {
     final minCell = MediaQuery.textScalerOf(context).scale(96);
     final columns = (width - 3 * _gap) / 4 >= minCell ? 4 : 2;
     final cellWidth = (width - (columns - 1) * _gap) / columns;
-    Widget cell(String label, int minutes, {bool highlight = false}) =>
-        SizedBox(
-          width: cellWidth,
-          child: Semantics(
-            container: true,
-            label: '$label : ${QuantityFormatter.formatDuration(minutes)}',
-            excludeSemantics: true,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-              decoration: BoxDecoration(
-                color: highlight ? AppColors.jauneClair : AppColors.blanc,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.bordure),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    label,
-                    style: theme.textTheme.bodySmall,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    QuantityFormatter.formatDuration(minutes),
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: AppColors.vertForet,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+    Widget cell(
+      IconData icon,
+      String label,
+      int minutes, {
+      bool highlight = false,
+    }) => SizedBox(
+      width: cellWidth,
+      child: Semantics(
+        container: true,
+        label: '$label : ${QuantityFormatter.formatDuration(minutes)}',
+        excludeSemantics: true,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+          decoration: BoxDecoration(
+            color: highlight ? AppColors.jauneClair : AppColors.blanc,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.bordure),
           ),
-        );
+          child: Column(
+            children: [
+              Icon(icon, size: 20, color: AppColors.vertForet),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: theme.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                QuantityFormatter.formatDuration(minutes),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: AppColors.vertForet,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
     return Wrap(
       spacing: _gap,
       runSpacing: _gap,
       children: [
-        cell('Préparation', recipe.prepTimeMinutes),
-        cell('Cuisson', recipe.cookTimeMinutes),
-        cell('Repos', recipe.restTimeMinutes),
-        cell('Total', recipe.totalTimeMinutes, highlight: true),
+        cell(Icons.restaurant_outlined, 'Préparation', recipe.prepTimeMinutes),
+        cell(
+          Icons.local_fire_department_outlined,
+          'Cuisson',
+          recipe.cookTimeMinutes,
+        ),
+        cell(Icons.hourglass_empty, 'Repos', recipe.restTimeMinutes),
+        cell(Icons.schedule, 'Total', recipe.totalTimeMinutes, highlight: true),
       ],
     );
   }

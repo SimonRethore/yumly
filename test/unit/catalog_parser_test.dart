@@ -5,6 +5,7 @@ import 'package:yumly/features/recipes/data/catalog_parser.dart';
 import 'package:yumly/features/recipes/domain/controlled_values.dart';
 import 'package:yumly/features/recipes/domain/unit.dart';
 
+import '../helpers/demo_catalog.dart';
 import '../helpers/fixtures.dart';
 
 void main() {
@@ -38,6 +39,7 @@ void main() {
             {'order': 1, 'text': 'Couper.'},
           ],
           'equipment': ['Casserole'],
+          'sourceUrl': 'https://example.com/curry',
         },
         ingredients: [
           ing('lentilles', quantity: 250, unit: 'g'),
@@ -56,12 +58,48 @@ void main() {
     expect(recipe.ingredients.first.unit, Unit.g);
     expect(recipe.ingredients.last.hasQuantity, isFalse);
     expect(recipe.equipment, ['Casserole']);
+    expect(recipe.sourceUrl, 'https://example.com/curry');
+    expect(recipe.done, isTrue);
+  });
+
+  test('« done » vaut false si précisé', () {
+    final source = catalogSource([
+      recipeJson('curry', overrides: {'done': false}),
+    ]);
+    expect(parser.parse(source).catalog.recipes.single.done, isFalse);
+  });
+
+  test('rejette un « done » qui n’est pas un booléen', () {
+    final source = catalogSource([
+      recipeJson('curry', overrides: {'done': 'oui'}),
+    ]);
+    expect(
+      () => parser.parse(source),
+      throwsCatalogError('« done » doit être un booléen.'),
+    );
+  });
+
+  test('rejette un lien source qui n’est pas une adresse http(s)', () {
+    final source = catalogSource([
+      recipeJson('curry', overrides: {'sourceUrl': 'example.com/curry'}),
+    ]);
+    expect(
+      () => parser.parse(source),
+      throwsCatalogError('« sourceUrl » doit être une adresse http ou https.'),
+    );
   });
 
   test('le catalogue intégré est valide', () {
     final source = File('assets/data/recipes.json').readAsStringSync();
     final result = parser.parse(source);
-    expect(result.catalog.recipes, isNotEmpty);
+    expect(result.catalog.recipes, hasLength(16));
+    expect(result.catalog.isDemo, isFalse);
+    expect(result.warnings, isEmpty);
+  });
+
+  test('le catalogue de démonstration est valide', () {
+    final result = parser.parse(demoCatalogJson);
+    expect(result.catalog.recipes, hasLength(8));
     expect(result.catalog.isDemo, isTrue);
     expect(result.warnings, isEmpty);
   });

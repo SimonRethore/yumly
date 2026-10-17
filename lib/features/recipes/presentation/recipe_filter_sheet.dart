@@ -38,6 +38,8 @@ List<ActiveFilter> activeFilters(RecipeFilters f) => [
       'Cuisson : ${v.label.toLowerCase()}',
       (s) => s.copyWith(cookTimes: toggled(s.cookTimes, v)),
     ),
+  for (final v in f.statuses)
+    ActiveFilter(v.label, (s) => s.copyWith(statuses: toggled(s.statuses, v))),
 ];
 
 Future<void> showRecipeFilterSheet(BuildContext context) {
@@ -166,6 +168,13 @@ class RecipeFilterSheet extends ConsumerWidget {
                   (s) => s.cookTimes,
                   (v) => v.label,
                   (s, v) => s.copyWith(cookTimes: v),
+                ),
+                family(
+                  'Statut',
+                  options.statuses,
+                  (s) => s.statuses,
+                  (v) => v.label,
+                  (s, v) => s.copyWith(statuses: v),
                 ),
                 const SizedBox(height: 16),
               ],

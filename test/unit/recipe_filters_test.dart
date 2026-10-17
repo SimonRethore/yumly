@@ -53,6 +53,7 @@ void main() {
         'origin': 'Mexicain',
         'course': 'dessert',
         'cookTimeMinutes': 10,
+        'done': false,
       },
     ),
   ]);
@@ -128,6 +129,21 @@ void main() {
       );
     });
 
+    test('statut de réalisation', () {
+      expect(ids(const RecipeFilters(statuses: {RecipeStatus.aTester})), [
+        'churros',
+      ]);
+      expect(ids(const RecipeFilters(statuses: {RecipeStatus.realisee})), [
+        'curry',
+        'chili',
+        'flan',
+      ]);
+      expect(
+        const RecipeFilters(statuses: {RecipeStatus.aTester}).activeFilterCount,
+        1,
+      );
+    });
+
     test('filtres et recherche se combinent', () {
       expect(ids(const RecipeFilters(query: 'chur', origins: {'Mexicain'})), [
         'churros',
@@ -160,6 +176,7 @@ void main() {
       CookTimeRange.moyen,
       CookTimeRange.long,
     ]);
+    expect(options.statuses, [RecipeStatus.realisee, RecipeStatus.aTester]);
   });
 
   test('tranches de cuisson', () {

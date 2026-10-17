@@ -27,8 +27,7 @@ Future<void> runEssentialJourney(
   WidgetTester tester,
   SharedPreferences prefs,
 ) async {
-  Future<void> launch() =>
-      pumpYumly(tester, prefs: prefs, realCatalogLoader: true);
+  Future<void> launch() => pumpYumly(tester, prefs: prefs);
 
   // 1. Lancer l'application hors ligne et afficher le catalogue.
   await launch();

@@ -1,9 +1,70 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yumly/core/widgets/recipe_image.dart';
+import 'package:yumly/features/recipes/data/catalog_parser.dart';
+import 'package:yumly/features/recipes/domain/recipe.dart';
 
 import '../helpers/test_app.dart';
 
 void main() {
+  testWidgets(
+    'catalogue intégré : chargé depuis les assets, sans bandeau démo',
+    (tester) async {
+      await pumpYumly(
+        tester,
+        prefs: await freshPrefs(),
+        realCatalogLoader: true,
+      );
+
+      expect(find.text('16 recettes'), findsOneWidget);
+      expect(find.textContaining('Catalogue de démonstration'), findsNothing);
+      // Recettes d'automne-hiver : aussi présentes dans « De saison »
+      // (horloge des tests au 10 octobre).
+      expect(find.text('De saison'), findsOneWidget);
+      await scrollTo(tester, find.text('Toutes les recettes'));
+      expect(find.text('Lasagnes à la bolognaise'), findsWidgets);
+      expect(find.text('Flammekueche'), findsWidgets);
+    },
+  );
+
+  testWidgets('recette à tester : ruban sur la photo', (tester) async {
+    // Catalogue intégré lu directement : le chargeur d'assets ne se relance
+    // pas dans un second test du même fichier.
+    final catalog = const CatalogParser()
+        .parse(File('assets/data/recipes.json').readAsStringSync())
+        .catalog;
+    await pumpYumly(tester, prefs: await freshPrefs(), catalog: catalog);
+    Finder ribbon(String message) => find.byWidgetPredicate(
+      (w) => w is RecipeRibbon && w.message == message,
+    );
+
+    await tester.enterText(find.byType(TextField), 'brioche');
+    await tester.pumpAndSettle();
+    expect(find.text('Brioche perdue'), findsOneWidget);
+    expect(ribbon('À tester'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'lasagnes');
+    await tester.pumpAndSettle();
+    expect(find.text('Lasagnes à la bolognaise'), findsOneWidget);
+    expect(find.byType(RecipeRibbon), findsNothing);
+  });
+
+  testWidgets('catalogue vide : état vide dédié, sans bandeau démo', (
+    tester,
+  ) async {
+    await pumpYumly(
+      tester,
+      prefs: await freshPrefs(),
+      catalog: Catalog(schemaVersion: 1, recipes: []),
+    );
+
+    expect(find.text('Aucune recette pour l’instant'), findsOneWidget);
+    expect(find.text('Effacer la recherche et les filtres'), findsNothing);
+    expect(find.textContaining('Catalogue de démonstration'), findsNothing);
+  });
+
   testWidgets('affiche les cartes de recettes du catalogue', (tester) async {
     await pumpYumly(tester, prefs: await freshPrefs());
 

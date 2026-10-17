@@ -31,6 +31,8 @@ class Recipe {
     this.cookTimeMinutes = 0,
     this.restTimeMinutes = 0,
     this.equipment = const [],
+    this.sourceUrl,
+    this.done = true,
   });
 
   final String id;
@@ -52,6 +54,12 @@ class Recipe {
   /// Étapes triées par `order` au chargement.
   final List<RecipeStep> steps;
   final List<String> equipment;
+
+  /// Lien vers la recette d'origine (http ou https).
+  final String? sourceUrl;
+
+  /// Recette déjà réalisée (vrai par défaut).
+  final bool done;
 
   int get totalTimeMinutes =>
       prepTimeMinutes + cookTimeMinutes + restTimeMinutes;
@@ -77,6 +85,8 @@ class Recipe {
     ingredients: ingredients,
     steps: steps,
     equipment: equipment,
+    sourceUrl: sourceUrl,
+    done: done,
   );
 }
 

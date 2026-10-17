@@ -129,6 +129,8 @@ class CatalogParser {
     final ingredients = _parseIngredients(r);
     final steps = _parseSteps(r);
     final equipment = r.stringList('equipment');
+    final sourceUrl = r.optionalHttpUrl('sourceUrl');
+    final done = r.optionalBool('done', defaultValue: true);
 
     if (r.errors.length != errorCount ||
         id == null ||
@@ -154,6 +156,8 @@ class CatalogParser {
       ingredients: ingredients,
       steps: steps,
       equipment: equipment,
+      sourceUrl: sourceUrl,
+      done: done,
     );
   }
 
@@ -272,6 +276,27 @@ class _Reader {
     if (value is String) return value.trim().isEmpty ? null : value;
     error('« $key » doit être un texte.');
     return null;
+  }
+
+  String? optionalHttpUrl(String key) {
+    final value = optionalString(key);
+    if (value == null) return null;
+    final uri = Uri.tryParse(value.trim());
+    if (uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https') &&
+        uri.host.isNotEmpty) {
+      return value.trim();
+    }
+    error('« $key » doit être une adresse http ou https.');
+    return null;
+  }
+
+  bool optionalBool(String key, {required bool defaultValue}) {
+    final value = _map[key];
+    if (value == null) return defaultValue;
+    if (value is bool) return value;
+    error('« $key » doit être un booléen.');
+    return defaultValue;
   }
 
   int _int(String key, {required int min, required bool required}) {

@@ -171,7 +171,16 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
           SliverToBoxAdapter(
             child: _SeasonalSection(recipes: seasonal, onOpen: _openRecipe),
           ),
-        if (recipes.isEmpty)
+        if (widget.catalog.recipes.isEmpty)
+          const SliverFillRemaining(
+            hasScrollBody: false,
+            child: EmptyState(
+              icon: Icons.menu_book_outlined,
+              title: 'Aucune recette pour l’instant',
+              message: 'Le catalogue est vide.',
+            ),
+          )
+        else if (recipes.isEmpty)
           SliverFillRemaining(
             hasScrollBody: false,
             child: EmptyState(
@@ -292,6 +301,7 @@ class _SeasonalSection extends StatelessWidget {
                             asset: recipe.imageAsset,
                             aspectRatio: 16 / 10,
                             iconSize: 32,
+                            ribbon: recipeRibbon(recipe),
                           ),
                           // Zone de texte contrainte : le titre s'abrège
                           // plutôt que de déborder.

@@ -29,7 +29,7 @@ Un catalogue d'une version inconnue est **rejeté** avec un message explicite
 | `title`           | texte             | oui         |                                                               |
 | `description`     | texte             | non         |                                                               |
 | `imageAsset`      | texte             | non         | Chemin d'une image sous `assets/recipes/`. Absente → placeholder + avertissement. |
-| `dietTypes`       | liste de textes   | non         | `vegetarian`, `vegan`. Ne jamais déduire un régime.           |
+| `dietTypes`       | liste de textes   | non         | `vegetarian`, `vegan`. Si la source ne le précise pas, le déduire des ingrédients à la saisie (l'application ne déduit rien elle-même). |
 | `origin`          | texte             | non         | Libellé français affiché tel quel (`Indien`, `Mexicain`…).     |
 | `course`          | texte             | non         | `aperitif`, `entree`, `plat`, `accompagnement`, `dessert`, `petit_dejeuner`, `boisson`. |
 | `seasons`         | liste de textes   | non         | `printemps`, `ete`, `automne`, `hiver`.                        |
@@ -42,6 +42,8 @@ Un catalogue d'une version inconnue est **rejeté** avec un message explicite
 | `ingredients`     | liste             | oui         | Ordonnée, voir ci-dessous.                                    |
 | `steps`           | liste             | oui         | Voir ci-dessous.                                              |
 | `equipment`       | liste de textes   | non         | Section masquée si vide.                                      |
+| `sourceUrl`       | texte             | non         | Lien vers la recette d'origine, adresse `http` ou `https` complète. |
+| `done`            | booléen           | non (`true`) | Recette déjà réalisée. `false` pour une recette pas encore testée. |
 
 Les valeurs contrôlées inconnues (faute de frappe, nouvelle valeur) sont
 **rejetées** : ajouter d'abord la valeur et son libellé dans

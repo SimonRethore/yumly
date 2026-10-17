@@ -27,6 +27,21 @@ enum CookTimeRange implements ControlledValue {
       values.firstWhere((range) => range.contains(minutes));
 }
 
+/// Statut de réalisation d'une recette (champ `done` du catalogue).
+enum RecipeStatus implements ControlledValue {
+  realisee('realisee', 'Déjà réalisée'),
+  aTester('a_tester', 'À tester');
+
+  const RecipeStatus(this.id, this.label);
+
+  @override
+  final String id;
+  @override
+  final String label;
+
+  static RecipeStatus of(Recipe recipe) => recipe.done ? realisee : aTester;
+}
+
 /// Critères de recherche et de filtrage. Les valeurs d'une même famille se
 /// combinent en OU, les familles entre elles en ET.
 class RecipeFilters {
@@ -39,6 +54,7 @@ class RecipeFilters {
     this.seasons = const {},
     this.difficulties = const {},
     this.cookTimes = const {},
+    this.statuses = const {},
   });
 
   final String query;
@@ -51,6 +67,7 @@ class RecipeFilters {
   final Set<Season> seasons;
   final Set<Difficulty> difficulties;
   final Set<CookTimeRange> cookTimes;
+  final Set<RecipeStatus> statuses;
 
   bool get hasActiveFilters =>
       diets.isNotEmpty ||
@@ -59,7 +76,8 @@ class RecipeFilters {
       months.isNotEmpty ||
       seasons.isNotEmpty ||
       difficulties.isNotEmpty ||
-      cookTimes.isNotEmpty;
+      cookTimes.isNotEmpty ||
+      statuses.isNotEmpty;
 
   bool get isEmpty => !hasActiveFilters && query.trim().isEmpty;
 
@@ -70,7 +88,8 @@ class RecipeFilters {
       months.length +
       seasons.length +
       difficulties.length +
-      cookTimes.length;
+      cookTimes.length +
+      statuses.length;
 
   RecipeFilters copyWith({
     String? query,
@@ -81,6 +100,7 @@ class RecipeFilters {
     Set<Season>? seasons,
     Set<Difficulty>? difficulties,
     Set<CookTimeRange>? cookTimes,
+    Set<RecipeStatus>? statuses,
   }) => RecipeFilters(
     query: query ?? this.query,
     diets: diets ?? this.diets,
@@ -90,6 +110,7 @@ class RecipeFilters {
     seasons: seasons ?? this.seasons,
     difficulties: difficulties ?? this.difficulties,
     cookTimes: cookTimes ?? this.cookTimes,
+    statuses: statuses ?? this.statuses,
   );
 
   /// Conserve la requête et retire tous les filtres.
@@ -110,6 +131,9 @@ class RecipeFilters {
     }
     if (cookTimes.isNotEmpty &&
         !cookTimes.contains(CookTimeRange.of(recipe.cookTimeMinutes))) {
+      return false;
+    }
+    if (statuses.isNotEmpty && !statuses.contains(RecipeStatus.of(recipe))) {
       return false;
     }
     return _matchesQuery(recipe);
@@ -144,6 +168,7 @@ class FilterOptions {
     required this.seasons,
     required this.difficulties,
     required this.cookTimes,
+    required this.statuses,
   });
 
   factory FilterOptions.fromRecipes(List<Recipe> recipes) {
@@ -154,6 +179,7 @@ class FilterOptions {
     final seasons = <Season>{};
     final difficulties = <Difficulty>{};
     final cookTimes = <CookTimeRange>{};
+    final statuses = <RecipeStatus>{};
     for (final recipe in recipes) {
       diets.addAll(recipe.dietTypes);
       if (recipe.origin != null) origins.add(recipe.origin!);
@@ -162,6 +188,7 @@ class FilterOptions {
       seasons.addAll(recipe.seasons);
       if (recipe.difficulty != null) difficulties.add(recipe.difficulty!);
       cookTimes.add(CookTimeRange.of(recipe.cookTimeMinutes));
+      statuses.add(RecipeStatus.of(recipe));
     }
 
     List<T> inEnumOrder<T extends Enum>(Set<T> set) =>
@@ -180,6 +207,7 @@ class FilterOptions {
       seasons: inEnumOrder(seasons),
       difficulties: inEnumOrder(difficulties),
       cookTimes: inEnumOrder(cookTimes),
+      statuses: inEnumOrder(statuses),
     );
   }
 
@@ -190,4 +218,5 @@ class FilterOptions {
   final List<Season> seasons;
   final List<Difficulty> difficulties;
   final List<CookTimeRange> cookTimes;
+  final List<RecipeStatus> statuses;
 }

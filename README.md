@@ -93,8 +93,8 @@ Choix techniques :
   [`docs/FORMAT_RECETTES.md`](docs/FORMAT_RECETTES.md).
 - Photos : `assets/recipes/` (dossier déjà déclaré dans `pubspec.yaml`).
 
-Le catalogue actuel est un **catalogue de démonstration** (8 recettes
-fictives, `"isDemo": true`), signalé par un bandeau dans l'application.
+Le catalogue intégré contient les recettes personnelles. Les 8 recettes de démonstration servent uniquement aux tests
+(`test/helpers/demo_catalog.dart`).
 
 ### Ajouter une recette
 

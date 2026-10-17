@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,10 +10,11 @@ import 'package:yumly/features/recipes/data/recipe_repository.dart';
 import 'package:yumly/features/recipes/domain/recipe.dart';
 import 'package:yumly/features/recipes/presentation/recipes_controller.dart';
 
-/// Catalogue intégré, lu directement depuis le disque (synchrone en test ;
-/// évalué uniquement s'il est utilisé).
-final Catalog bundledCatalog = const CatalogParser()
-    .parse(File('assets/data/recipes.json').readAsStringSync())
+import 'demo_catalog.dart';
+
+/// Catalogue de démonstration (évalué uniquement s'il est utilisé).
+final Catalog demoCatalog = const CatalogParser()
+    .parse(demoCatalogJson)
     .catalog;
 
 /// Monte l'application complète sur un écran de téléphone.
@@ -23,6 +22,7 @@ Future<void> pumpYumly(
   WidgetTester tester, {
   required SharedPreferences prefs,
   DateTime? now,
+  Catalog? catalog,
   bool realCatalogLoader = false,
 }) async {
   tester.view.physicalSize = const Size(1170, 2532);
@@ -34,10 +34,10 @@ Future<void> pumpYumly(
       key: UniqueKey(),
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
-        // Le vrai chargeur (assets + manifeste) est utilisé sur appareil et
-        // dans le parcours d'intégration.
+        // Par défaut, catalogue de démonstration ; le vrai chargeur (assets +
+        // manifeste) lit le catalogue intégré.
         if (!realCatalogLoader)
-          catalogProvider.overrideWith((ref) async => bundledCatalog),
+          catalogProvider.overrideWith((ref) async => catalog ?? demoCatalog),
         clockProvider.overrideWithValue(() => now ?? DateTime(2026, 10, 10)),
       ],
       child: const YumlyApp(),
