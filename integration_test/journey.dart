@@ -91,7 +91,9 @@ Future<void> runEssentialJourney(
   await _tapAndSettle(tester, find.widgetWithText(CheckboxListTile, 'Oignon'));
   await _tapAndSettle(tester, find.text('Copier la liste'));
   expect(find.text('Liste copiée dans le presse-papiers'), findsOneWidget);
-  expect(copied.single, contains('- Oignon : 3$_nbsp½${_nbsp}pièces'));
+  // Oignon coché : déjà acheté, donc absent du texte copié.
+  expect(copied.single, isNot(contains('Oignon')));
+  expect(copied.single, contains('- Gousse d’ail : 7${_nbsp}pièces'));
   await dismissSnackBars(tester);
 
   // 8. Relancer l'application : la liste et l'état coché sont conservés.

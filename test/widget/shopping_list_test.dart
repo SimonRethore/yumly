@@ -123,7 +123,9 @@ void main() {
       copied.single,
       startsWith('Liste de courses Yumly\n\nFruits et légumes\n'),
     );
-    expect(copied.single, contains('- Oignon : 2${nbsp}pièces'));
+    // Produit coché (déjà acheté) : absent du texte copié.
+    expect(copied.single, isNot(contains('Oignon')));
+    expect(copied.single, contains('- Gousse d’ail : 4${nbsp}pièces'));
     expect(
       copied.single,
       contains('- Tomates concassées en conserve : 1,2${nbsp}kg'),
@@ -134,6 +136,36 @@ void main() {
     await tester.tap(find.text('Tout décocher'));
     await tester.pumpAndSettle();
     expect(tester.widget<CheckboxListTile>(oignon).value, isFalse);
+  });
+
+  testWidgets('tout coché : rien à copier', (tester) async {
+    await pumpYumly(
+      tester,
+      prefs: await freshPrefs(
+        withList('[{"recipeId":"guacamole-005","servings":4}]'),
+      ),
+    );
+    await openShoppingList(tester);
+    await tester.tap(find.text('Voir les ingrédients à acheter'));
+    await tester.pumpAndSettle();
+
+    final tiles = find.byType(CheckboxListTile);
+    for (var i = 0; i < tiles.evaluate().length; i++) {
+      await tester.ensureVisible(tiles.at(i));
+      await tester.tap(tiles.at(i));
+      await tester.pumpAndSettle();
+    }
+
+    final button = find.widgetWithText(FilledButton, 'Copier la liste');
+    expect(tester.widget<FilledButton>(button).onPressed, isNull);
+    expect(
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.copy_all_outlined),
+          )
+          .onPressed,
+      isNull,
+    );
   });
 
   testWidgets('erreur de presse-papiers signalée clairement', (tester) async {

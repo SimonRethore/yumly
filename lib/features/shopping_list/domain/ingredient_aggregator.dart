@@ -72,7 +72,7 @@ abstract final class IngredientAggregator {
   }
 
   /// Texte de la liste à copier : catégories en titres, ingrédients en
-  /// puces. Tous les ingrédients sont inclus, cochés ou non.
+  /// puces. L'appelant ne passe que les ingrédients non cochés.
   static String toClipboardText(List<ShoppingIngredient> items) {
     final buffer = StringBuffer('Liste de courses Yumly\n');
     for (final group in groupByCategory(items)) {

@@ -43,6 +43,13 @@ class ShoppingIngredientsScreen extends ConsumerWidget {
     final checkedCount = hasItems
         ? items.where((i) => checked.contains(i.key)).length
         : 0;
+    // Seuls les produits restant à acheter sont copiés.
+    final toBuy = hasItems
+        ? items.where((i) => !checked.contains(i.key)).toList()
+        : const <ShoppingIngredient>[];
+    final VoidCallback? copy = toBuy.isEmpty
+        ? null
+        : () => _copy(context, toBuy);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +59,7 @@ class ShoppingIngredientsScreen extends ConsumerWidget {
             IconButton(
               tooltip: 'Copier la liste',
               icon: const Icon(Icons.copy_all_outlined),
-              onPressed: () => _copy(context, items),
+              onPressed: copy,
             ),
         ],
       ),
@@ -93,7 +100,7 @@ class ShoppingIngredientsScreen extends ConsumerWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: FilledButton.icon(
-                        onPressed: () => _copy(context, items),
+                        onPressed: copy,
                         icon: const Icon(Icons.copy_all_outlined),
                         label: const Text('Copier la liste'),
                       ),
