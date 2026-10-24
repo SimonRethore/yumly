@@ -522,7 +522,7 @@
     {
       "id": "chakchouka-015",
       "title": "Chakchouka",
-      "done": false,
+      "done": true,
       "description": "Spécialité méditerranéenne de poivrons et tomates aux épices, avec des œufs cuits doucement dans la sauce.",
       "imageAsset": "assets/recipes/chakchouka.jpg",
       "dietTypes": ["vegetarian"],
@@ -546,6 +546,7 @@
         { "ingredientId": "cumin-poudre", "name": "Cumin en poudre", "quantity": 1, "unit": "c_a_c", "category": "epices_condiments" },
         { "ingredientId": "persil", "name": "Persil", "quantity": 2, "unit": "c_a_s", "category": "fruits_legumes" },
         { "ingredientId": "oeuf", "name": "Œuf", "quantity": 4, "unit": "piece", "category": "produits_frais" },
+        { "ingredientId": "semoule", "name": "Semoule moyenne", "quantity": 280, "unit": "g", "category": "epicerie_seche" },
         { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 3, "unit": "c_a_s", "category": "epicerie_seche" },
         { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" },
         { "ingredientId": "poivre", "name": "Poivre", "category": "epices_condiments", "quantityNote": "au goût" }
@@ -558,10 +559,11 @@
         { "order": 5, "text": "Ajouter 2 c. à s. d’huile d’olive et les poivrons. Cuire à feu moyen en remuant souvent jusqu’à ce qu’ils soient bien tendres." },
         { "order": 6, "text": "Ajouter les épices, mélanger, puis incorporer les tomates et le persil haché. Saler et poivrer." },
         { "order": 7, "text": "Laisser mijoter environ 20 minutes." },
-        { "order": 8, "text": "Creuser 4 puits dans la préparation, y casser les œufs et cuire jusqu’à la cuisson souhaitée." },
-        { "order": 9, "text": "Servir aussitôt." }
+        { "order": 8, "text": "Pendant ce temps, verser la semoule dans un saladier, la couvrir du même volume d’eau bouillante salée, couvrir et laisser gonfler 5 minutes, puis l’égrainer à la fourchette." },
+        { "order": 9, "text": "Creuser 4 puits dans la préparation, y casser les œufs et cuire jusqu’à la cuisson souhaitée." },
+        { "order": 10, "text": "Servir aussitôt avec la semoule." }
       ],
-      "equipment": ["Grande poêle", "Planche à découper"],
+      "equipment": ["Grande poêle", "Planche à découper", "Saladier"],
       "sourceUrl": "https://www.maspatule.com/blog/2025/09/18/recette-chakchouka/"
     },
     {
@@ -614,7 +616,7 @@
     {
       "id": "porc-epice-mexicaine-riz-curcuma-017",
       "title": "Porc épicé à la mexicaine & riz au curcuma",
-      "done": false,
+      "done": true,
       "description": "Chair à saucisse aux épices mexicaines mijotée à la tomate, servie sur un riz au curcuma avec de l’avocat, de la coriandre et un filet de crème.",
       "imageAsset": "assets/recipes/porc-epice-mexicaine-riz-curcuma.jpg",
       "origin": "Mexicain",
@@ -653,6 +655,160 @@
       ],
       "equipment": ["Casserole", "Sauteuse", "Bol", "Couteau", "Planche à découper"],
       "sourceUrl": "https://www.hellofresh.fr/recipes/tacos-bowl-au-porc-hache-652d458d6720825b47fd8ad6"
+    },
+    {
+      "id": "gratin-raviolis-ratatouille-018",
+      "title": "Gratin de raviolis à la ratatouille",
+      "description": "Tortellini au pesto et ratatouille gratinés au gruyère râpé, prêts en 5 minutes de préparation.",
+      "imageAsset": "assets/recipes/gratin-raviolis-ratatouille.jpg",
+      "dietTypes": ["vegetarian"],
+      "origin": "Français",
+      "course": "plat",
+      "seasons": ["automne", "hiver"],
+      "months": [10, 11, 12, 1, 2, 3],
+      "difficulty": "facile",
+      "prepTimeMinutes": 5,
+      "cookTimeMinutes": 30,
+      "restTimeMinutes": 0,
+      "defaultServings": 3,
+      "ingredients": [
+        { "ingredientId": "tortellini-pesto", "name": "Tortellini au pesto", "quantity": 600, "unit": "g", "category": "produits_frais" },
+        { "ingredientId": "ratatouille", "name": "Ratatouille", "quantity": 350, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "gruyere-rape", "name": "Gruyère râpé", "quantity": 50, "unit": "g", "category": "produits_laitiers_alternatives" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Préchauffer le four à 200 °C." },
+        { "order": 2, "text": "Précuire les tortellini 5 minutes dans une casserole d’eau bouillante, puis les égoutter." },
+        { "order": 3, "text": "Dans le plat à gratin, mélanger les tortellini et la ratatouille. Recouvrir d’une couche de gruyère râpé." },
+        { "order": 4, "text": "Enfourner 25 minutes." },
+        { "order": 5, "text": "Sortir le plat du four une fois le gruyère fondu et le dessus du gratin bien doré." }
+      ],
+      "equipment": ["Four", "Plat à gratin", "Casserole", "Passoire"],
+      "sourceUrl": "https://jow.fr/recipes/gratin-de-ravioles-a-la-ratatouille-8juqfvmykslskvjk0rh1"
+    },
+    {
+      "id": "gratin-gnocchi-chorizo-poivron-019",
+      "title": "Gratin de gnocchi au chorizo et poivron",
+      "description": "Gnocchi poêlés, chorizo et poivrons dans une sauce tomate aux herbes, gratinés à la mozzarella.",
+      "imageAsset": "assets/recipes/gratin-gnocchi-chorizo.jpg",
+      "done": false,
+      "origin": "Français",
+      "course": "plat",
+      "seasons": ["ete"],
+      "months": [6, 7, 8, 9],
+      "difficulty": "facile",
+      "prepTimeMinutes": 15,
+      "cookTimeMinutes": 35,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "gnocchi", "name": "Gnocchi frais", "quantity": 600, "unit": "g", "category": "produits_frais" },
+        { "ingredientId": "oignon-rouge", "name": "Oignon rouge", "quantity": 1, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "ail", "name": "Gousse d’ail", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "chorizo", "name": "Chorizo", "quantity": 150, "unit": "g", "category": "viandes_poissons" },
+        { "ingredientId": "poivron-rouge", "name": "Poivron rouge", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "tomates-concassees", "name": "Tomates concassées", "quantity": 400, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "herbes-italiennes", "name": "Herbes italiennes", "quantity": 1, "unit": "c_a_s", "category": "epices_condiments" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "quantity": 1, "unit": "c_a_s", "category": "epicerie_seche" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "poivre", "name": "Poivre", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "mozzarella-rapee", "name": "Mozzarella râpée", "quantity": 100, "unit": "g", "category": "produits_laitiers_alternatives" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Émincer finement l’oignon et l’ail. Couper les poivrons et le chorizo en petits morceaux." },
+        { "order": 2, "text": "Dans la sauteuse, faire dorer les gnocchi dans l’huile d’olive à feu moyen-vif, sans les précuire. Réserver." },
+        { "order": 3, "text": "Dans la même sauteuse, faire revenir le chorizo, l’ail, l’oignon et les poivrons environ 5 minutes en remuant." },
+        { "order": 4, "text": "Ajouter les tomates concassées, les herbes italiennes, le sel et le poivre. Laisser mijoter à feu doux environ 15 minutes." },
+        { "order": 5, "text": "Préchauffer le four à 220 °C en position gril." },
+        { "order": 6, "text": "Mélanger les gnocchi à la sauce, verser le tout dans le plat à gratin et parsemer de mozzarella râpée." },
+        { "order": 7, "text": "Enfourner environ 10 minutes sous le gril, en surveillant, jusqu’à ce que le fromage soit bien doré." }
+      ],
+      "equipment": ["Sauteuse", "Plat à gratin", "Four", "Couteau", "Planche à découper"],
+      "sourceUrl": "https://www.amandinecooking.com/gratin-de-gnocchi-au-chorizo-et-poivron.html"
+    },
+    {
+      "id": "gnocchi-poulet-pesto-rosso-tomate-020",
+      "title": "Gnocchi au poulet, pesto rosso et tomate",
+      "description": "Gnocchi dorés à la poêle, poulet et tomates fraîches dans une sauce crémeuse au pesto rosso et aux herbes.",
+      "imageAsset": "assets/recipes/gnocchi-pesto-poulet.jpg",
+      "done": false,
+      "origin": "Italien",
+      "course": "plat",
+      "seasons": ["ete"],
+      "months": [6, 7, 8, 9],
+      "difficulty": "facile",
+      "prepTimeMinutes": 10,
+      "cookTimeMinutes": 20,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "gnocchi", "name": "Gnocchi frais", "quantity": 500, "unit": "g", "category": "produits_frais" },
+        { "ingredientId": "filet-poulet", "name": "Filet de poulet", "quantity": 3, "unit": "piece", "category": "viandes_poissons" },
+        { "ingredientId": "tomate", "name": "Tomate", "quantity": 4, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "pesto-rosso", "name": "Pesto rosso", "quantity": 60, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "creme-fraiche-epaisse", "name": "Crème fraîche épaisse", "quantity": 15, "unit": "cl", "category": "produits_laitiers_alternatives" },
+        { "ingredientId": "herbes-italiennes", "name": "Herbes italiennes", "quantity": 2, "unit": "c_a_s", "category": "epices_condiments" },
+        { "ingredientId": "huile-olive", "name": "Huile d’olive", "category": "epicerie_seche", "quantityNote": "un filet" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "poivre", "name": "Poivre", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "parmesan-rape", "name": "Parmesan râpé", "category": "produits_laitiers_alternatives", "quantityNote": "pour servir (facultatif)" },
+        { "ingredientId": "persil", "name": "Persil", "category": "fruits_legumes", "quantityNote": "pour servir (facultatif)" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Couper le poulet en dés et concasser grossièrement les tomates." },
+        { "order": 2, "text": "Faire chauffer un filet d’huile d’olive dans la sauteuse. Faire dorer rapidement les gnocchi à feu vif, puis les réserver." },
+        { "order": 3, "text": "Ajouter un peu d’huile si besoin et faire dorer le poulet à feu vif. Ajouter les tomates et poursuivre la cuisson à feu doux." },
+        { "order": 4, "text": "Incorporer le pesto rosso, la crème fraîche et les herbes italiennes. Remettre les gnocchi, saler, poivrer et bien mélanger pour les enrober de sauce." },
+        { "order": 5, "text": "Laisser mijoter 10 minutes à feu doux." },
+        { "order": 6, "text": "Servir parsemé de parmesan râpé et de persil haché, selon les envies." }
+      ],
+      "equipment": ["Sauteuse", "Couteau", "Planche à découper"],
+      "sourceUrl": "https://www.amandinecooking.com/gnocchi-au-poulet-pesto-rosso-et-tomate.html"
+    },
+    {
+      "id": "mafe-poulet-carotte-021",
+      "title": "Mafé revisité au poulet & carotte",
+      "description": "Poulet et carottes mijotés dans une sauce au beurre de cacahuète, gingembre, paprika et piment, servis avec du riz, des cacahuètes concassées et de la coriandre.",
+      "imageAsset": "assets/recipes/mafe-poulet-carotte.jpg",
+      "done": false,
+      "origin": "Malien",
+      "course": "plat",
+      "seasons": ["automne", "hiver"],
+      "months": [9, 10, 11, 12, 1, 2, 3],
+      "difficulty": "moyen",
+      "prepTimeMinutes": 10,
+      "cookTimeMinutes": 15,
+      "restTimeMinutes": 0,
+      "defaultServings": 4,
+      "ingredients": [
+        { "ingredientId": "riz", "name": "Riz basmati", "quantity": 270, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "filet-poulet", "name": "Filet de poulet", "quantity": 4, "unit": "piece", "category": "viandes_poissons" },
+        { "ingredientId": "carotte", "name": "Carotte", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "oignon", "name": "Oignon", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "ail", "name": "Gousse d’ail", "quantity": 2, "unit": "piece", "category": "fruits_legumes" },
+        { "ingredientId": "gingembre-frais", "name": "Gingembre frais", "category": "fruits_legumes", "quantityNote": "1 cm" },
+        { "ingredientId": "paprika", "name": "Paprika", "quantity": 1, "unit": "c_a_c", "category": "epices_condiments" },
+        { "ingredientId": "piment-cayenne", "name": "Piment de Cayenne en poudre", "quantity": 1, "unit": "pincee", "category": "epices_condiments" },
+        { "ingredientId": "laurier", "name": "Feuille de laurier", "category": "epices_condiments", "quantityNote": "2 (facultatif)" },
+        { "ingredientId": "concentre-tomates", "name": "Concentré de tomates", "quantity": 70, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "beurre-cacahuete", "name": "Beurre de cacahuète", "quantity": 80, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "cube-bouillon-volaille", "name": "Cube de bouillon de volaille", "quantity": 1, "unit": "piece", "category": "epicerie_seche" },
+        { "ingredientId": "sucre-poudre", "name": "Sucre en poudre", "quantity": 2, "unit": "c_a_c", "category": "epicerie_seche" },
+        { "ingredientId": "huile-tournesol", "name": "Huile de tournesol", "quantity": 4, "unit": "c_a_s", "category": "epicerie_seche" },
+        { "ingredientId": "cacahuetes-non-salees", "name": "Cacahuètes non salées", "quantity": 40, "unit": "g", "category": "epicerie_seche" },
+        { "ingredientId": "coriandre", "name": "Coriandre fraîche", "category": "fruits_legumes", "quantityNote": "1 bouquet" },
+        { "ingredientId": "sel", "name": "Sel", "category": "epices_condiments", "quantityNote": "au goût" },
+        { "ingredientId": "poivre", "name": "Poivre", "category": "epices_condiments", "quantityNote": "au goût" }
+      ],
+      "steps": [
+        { "order": 1, "text": "Porter une casserole d’eau salée à ébullition et y faire cuire le riz 12 à 14 minutes. L’égoutter et le réserver à couvert." },
+        { "order": 2, "text": "Pendant ce temps, délayer le cube de bouillon dans 325 ml d’eau chaude. Ciseler les oignons. Râper l’ail et le gingembre, avec la peau si on le souhaite (il pique : le doser selon son goût). Éplucher les carottes et les couper en très fines demi-lunes pour qu’elles cuisent vite. Couper le poulet en dés de 1 à 2 cm." },
+        { "order": 3, "text": "Faire chauffer l’huile dans la sauteuse et y faire revenir les oignons et les carottes 3 à 5 minutes à feu moyen-vif. Ajouter l’ail, le gingembre, le sucre, le paprika, le piment de Cayenne et le concentré de tomates, puis laisser cuire 1 minute." },
+        { "order": 4, "text": "Déglacer avec le bouillon, incorporer le beurre de cacahuète et ajouter éventuellement les feuilles de laurier. Baisser le feu, ajouter le poulet et laisser mijoter 3 à 5 minutes à couvert à feu moyen, jusqu’à ce que le poulet ne soit plus rosé à cœur et que les carottes soient fondantes. Saler légèrement et poivrer. Ajouter un peu d’eau si la sauce épaissit trop ; si on a le temps, la laisser mijoter un peu plus longtemps." },
+        { "order": 5, "text": "Pendant que la sauce mijote, concasser grossièrement les cacahuètes et effeuiller la coriandre. Retirer le laurier s’il y en a. Servir le riz dans des assiettes creuses avec le mafé à côté ou par-dessus, puis parsemer de cacahuètes et de coriandre." }
+      ],
+      "equipment": ["Casserole avec couvercle", "Sauteuse avec couvercle", "Râpe", "Éplucheur", "Couteau", "Planche à découper"],
+      "sourceUrl": "https://www.hellofresh.fr/recipes/mafe-revisite-au-poulet-and-carotte-64073d979c6d10cd16eab751"
     }
   ]
 }

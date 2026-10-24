@@ -48,6 +48,7 @@ abstract final class OriginFlags {
     'japonais': 'JP',
     'libanais': 'LB',
     'malaisien': 'MY',
+    'malien': 'ML',
     'marocain': 'MA',
     'mexicain': 'MX',
     'neerlandais': 'NL',

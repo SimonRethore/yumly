@@ -126,6 +126,13 @@ class _RecipeDetailState extends ConsumerState<_RecipeDetail> {
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
             sliver: SliverList.list(
               children: [
+                if (recipeRibbon(recipe) case final status?) ...[
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: _StatusLabel(status),
+                  ),
+                  const SizedBox(height: 8),
+                ],
                 Text(recipe.title, style: theme.textTheme.headlineMedium),
                 if (recipe.description != null) ...[
                   const SizedBox(height: 8),
@@ -221,6 +228,41 @@ class _SectionTitle extends StatelessWidget {
   );
 }
 
+/// Étiquette « À tester » au-dessus du titre, aux couleurs du ruban des
+/// cartes.
+class _StatusLabel extends StatelessWidget {
+  const _StatusLabel(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.vertForet,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.explore_outlined, size: 16, color: AppColors.blanc),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: AppColors.blanc,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Origine, régime, type de plat, saisons, mois et difficulté.
 class _Criteria extends StatelessWidget {
   const _Criteria({required this.recipe});
@@ -245,10 +287,7 @@ class _Criteria extends StatelessWidget {
       if (recipe.course != null)
         RecipeMeta(icon: Icons.restaurant, label: recipe.course!.label),
       if (recipe.difficulty != null)
-        RecipeMeta(
-          icon: Icons.signal_cellular_alt,
-          label: recipe.difficulty!.label,
-        ),
+        RecipeMeta.difficulty(difficulty: recipe.difficulty!),
       if (seasons.isNotEmpty)
         RecipeMeta(
           icon: Icons.wb_sunny_outlined,

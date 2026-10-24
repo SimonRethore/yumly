@@ -1,6 +1,6 @@
 # TODO RECIPES
 
-## Entrée
+## Entrée (7)
 
 - Beignet de crevettes
 - Cake aux courgettes & chorizo : https://jow.fr/recipes/cake-aux-courgettes-et-chorizo-9bps2sb91si073zw0l6o
@@ -10,7 +10,7 @@
 - Salade de riz au surimi : https://jow.fr/recipes/salade-de-riz-au-surimi-8t7pc8jrbdmohqfn09l4
 - Samoussa
 
-## Plat
+## Plat (27)
 
 - Aiguillettes de poulet façon teriyaki : https://www.hellofresh.fr/recipes/aiguillettes-de-poulet-facon-teriyaki-64d3b20ec6d2a3702a70fd91
 - Bibimbap coréen porc haché & sésame : https://www.hellofresh.fr/recipes/bibimbap-coreen-porc-hache-and-sesame-64073f18683721c9a32b08d0
@@ -18,8 +18,8 @@
 - Bowl
 - Burger
 - burritos
+- Cordon bleu
 - Fish and Chips : https://www.tables-auberges.com/recettes/fish-and-chips-traditionnel
-- Gratin de ravioles à la ratatouille : https://jow.fr/recipes/gratin-de-ravioles-a-la-ratatouille-8juqfvmykslskvjk0rh1
 - grattin dauphinois
 - Gyudon : http://hellofresh.fr/recipes/gyudon-bowl-de-boeuf-a-la-japonaise-64108555fd78b79c42eb50b8
 - Hot Dog ???
@@ -31,19 +31,22 @@
 - pate carbo
 - Pizza ???
 - Porc sauté & tomates à la chinoise: https://www.hellofresh.fr/recipes/stir-fry-porc-and-tomates-a-la-chinoise-67d99aaedffcefea9daafbc4
+- Pot-au-feu
 - Poulet basquaise : https://www.marmiton.org/recettes/recette_poulet-basquaise_16969.aspx
-- poulet mafé : https://jow.fr/recipes/poulet-facon-mafe-et-riz-8lqn6ri6lq3qi7930qzc
-  https://www.hellofresh.fr/recipes/mafe-revisite-au-poulet-and-carotte-64073d979c6d10cd16eab751
 - Poulet Teryaki
 - Quiche Loraine
 - Ramen : https://lacerisesurlemaillot.fr/ramen-poulet-facile/
+- Risotto
+- Saint-Jacques
 - Tenders
 
-## Dessert
+## Dessert (8)
 
 - Beignet aux pommes
 - Brownie
 - Cookie
+- Fondant au chocolat
 - Île flottante
+- Mousse au chocolat
 - Pancake
 - Tarte aux pommes

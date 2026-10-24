@@ -36,8 +36,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Retour'));
     await tester.pumpAndSettle();
-    await scrollTo(tester, find.text('Filtres'), delta: -250);
-    await tester.tap(find.text('Filtres'));
+    await scrollTo(tester, find.byTooltip('Filtres'), delta: -250);
+    await tester.tap(find.byTooltip('Filtres'));
     await tester.pumpAndSettle();
     expect(find.text('Réinitialiser les filtres'), findsOneWidget);
 

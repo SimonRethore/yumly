@@ -8,6 +8,8 @@ import 'package:yumly/core/storage/local_storage.dart';
 import 'package:yumly/features/recipes/data/catalog_parser.dart';
 import 'package:yumly/features/recipes/data/recipe_repository.dart';
 import 'package:yumly/features/recipes/domain/recipe.dart';
+import 'package:yumly/features/recipes/presentation/recipe_card.dart';
+import 'package:yumly/features/recipes/presentation/recipe_list_screen.dart';
 import 'package:yumly/features/recipes/presentation/recipes_controller.dart';
 
 import 'demo_catalog.dart';
@@ -75,6 +77,19 @@ List<String> mockClipboard(WidgetTester tester, {bool fail = false}) {
   return copied;
 }
 
+/// Carte de la grille du catalogue (une recette de saison a aussi une carte
+/// dans le carrousel « De saison »).
+Finder gridCard(String title) => find.descendant(
+  of: find.byType(SliverList),
+  matching: find.widgetWithText(RecipeCard, title),
+);
+
+/// Cartes de la rubrique [title] de l'accueil (« De saison », « À tester »).
+Finder carouselCards(String title) => find.descendant(
+  of: find.byWidgetPredicate((w) => w is RecipeCarousel && w.title == title),
+  matching: find.byType(RecipeCard),
+);
+
 /// Fait défiler la zone principale jusqu'à rendre [finder] visible.
 Future<void> scrollTo(
   WidgetTester tester,
@@ -87,6 +102,26 @@ Future<void> scrollTo(
     scrollable: find
         .descendant(
           of: find.byType(CustomScrollView).hitTestable().first,
+          matching: find.byType(Scrollable),
+        )
+        .first,
+  );
+  await tester.pumpAndSettle();
+}
+
+/// Fait défiler la feuille de filtres jusqu'à rendre [finder] visible
+/// (vers le haut avec un [delta] négatif).
+Future<void> scrollSheetTo(
+  WidgetTester tester,
+  Finder finder, {
+  double delta = 100,
+}) async {
+  await tester.scrollUntilVisible(
+    finder,
+    delta,
+    scrollable: find
+        .descendant(
+          of: find.byType(BottomSheet),
           matching: find.byType(Scrollable),
         )
         .first,

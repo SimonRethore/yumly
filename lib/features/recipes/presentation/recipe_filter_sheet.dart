@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/controlled_values.dart';
 import '../domain/origin_flags.dart';
 import '../domain/recipe_filters.dart';
+import '../domain/recipe_sort.dart';
+import 'difficulty_gauge.dart';
 import 'recipes_controller.dart';
 
 /// Une pastille de filtre active (supprimable individuellement).
@@ -55,7 +57,7 @@ Future<void> showRecipeFilterSheet(BuildContext context) {
   );
 }
 
-/// Feuille de filtres : chaque famille n'affiche que les valeurs présentes
+/// Feuille de tri et de filtres : chaque famille n'affiche que les valeurs présentes
 /// dans le catalogue. Les filtres s'appliquent immédiatement.
 class RecipeFilterSheet extends ConsumerWidget {
   const RecipeFilterSheet({super.key});
@@ -65,6 +67,7 @@ class RecipeFilterSheet extends ConsumerWidget {
     final options = ref.watch(filterOptionsProvider);
     final filters = ref.watch(recipeFiltersProvider);
     final count = ref.watch(filteredRecipesProvider).length;
+    final sort = ref.watch(recipeSortProvider);
     final notifier = ref.read(recipeFiltersProvider.notifier);
     if (options == null) return const SizedBox.shrink();
 
@@ -73,15 +76,25 @@ class RecipeFilterSheet extends ConsumerWidget {
       List<T> values,
       Set<T> Function(RecipeFilters) selectedIn,
       String Function(T) label,
-      RecipeFilters Function(RecipeFilters, Set<T>) apply,
-    ) {
+      RecipeFilters Function(RecipeFilters, Set<T>) apply, {
+      Widget Function(T)? leading,
+    }) {
       if (values.isEmpty) return const SizedBox.shrink();
       return _FilterFamily(
         title: title,
         children: [
           for (final value in values)
             FilterChip(
-              label: Text(label(value)),
+              label: leading == null
+                  ? Text(label(value))
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        leading(value),
+                        const SizedBox(width: 6),
+                        Flexible(child: Text(label(value))),
+                      ],
+                    ),
               selected: selectedIn(filters).contains(value),
               // Bascule calculée sur l'état courant (taps rapprochés).
               onSelected: (_) => notifier.update(
@@ -124,6 +137,18 @@ class RecipeFilterSheet extends ConsumerWidget {
               controller: controller,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
+                _FilterFamily(
+                  title: 'Trier par',
+                  children: [
+                    for (final option in RecipeSort.values)
+                      ChoiceChip(
+                        label: Text(option.label),
+                        selected: option == sort,
+                        onSelected: (_) =>
+                            ref.read(recipeSortProvider.notifier).set(option),
+                      ),
+                  ],
+                ),
                 family(
                   'Régime',
                   options.diets,
@@ -165,6 +190,7 @@ class RecipeFilterSheet extends ConsumerWidget {
                   (s) => s.difficulties,
                   (v) => v.label,
                   (s, v) => s.copyWith(difficulties: v),
+                  leading: (v) => DifficultyGauge(difficulty: v),
                 ),
                 family(
                   'Temps de cuisson',

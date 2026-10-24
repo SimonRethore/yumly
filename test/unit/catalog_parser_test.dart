@@ -92,7 +92,7 @@ void main() {
   test('le catalogue intégré est valide', () {
     final source = File('assets/data/recipes.json').readAsStringSync();
     final result = parser.parse(source);
-    expect(result.catalog.recipes, hasLength(17));
+    expect(result.catalog.recipes, hasLength(21));
     expect(result.catalog.isDemo, isFalse);
     expect(result.warnings, isEmpty);
   });

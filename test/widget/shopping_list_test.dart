@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yumly/features/favorites/presentation/favorites_controller.dart';
 import 'package:yumly/features/shopping_list/data/shopping_list_repository.dart';
 
 import '../helpers/test_app.dart';
@@ -34,14 +35,17 @@ void main() {
     expect(find.text('Qu’est-ce qu’on cuisine aujourd’hui ?'), findsOneWidget);
   });
 
-  testWidgets('ajout depuis une carte, badge, portions et suppression', (
-    tester,
-  ) async {
-    await pumpYumly(tester, prefs: await freshPrefs());
-    await scrollTo(
+  testWidgets('ajout depuis une carte des favoris, badge, portions et '
+      'suppression', (tester) async {
+    // Les cartes de l'accueil n'ont pas de bouton : celles des favoris, si.
+    await pumpYumly(
       tester,
-      find.byTooltip('Ajouter « Guacamole » à la liste de courses'),
+      prefs: await freshPrefs({
+        FavoritesNotifier.key: '{"version":1,"data":["guacamole-005"]}',
+      }),
     );
+    await tester.tap(navTab('Favoris'));
+    await tester.pumpAndSettle();
     await tester.tap(
       find.byTooltip('Ajouter « Guacamole » à la liste de courses'),
     );

@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yumly/features/recipes/data/catalog_parser.dart';
 import 'package:yumly/features/shopping_list/data/shopping_list_repository.dart';
+
+import 'package:yumly/features/recipes/presentation/recipe_card.dart';
 
 import '../helpers/test_app.dart';
 
@@ -30,6 +35,8 @@ void main() {
     expect(find.text('Végan'), findsOneWidget);
     expect(find.text('Plat'), findsOneWidget);
     expect(find.text('Facile'), findsOneWidget);
+    // Recette déjà réalisée : pas d'étiquette « À tester ».
+    expect(find.text('À tester'), findsNothing);
     expect(find.text('Automne, Hiver'), findsOneWidget);
     expect(find.bySemanticsLabel('Préparation : 15${nbsp}min'), findsOneWidget);
     expect(find.bySemanticsLabel('Cuisson : 30${nbsp}min'), findsOneWidget);
@@ -47,6 +54,21 @@ void main() {
     );
     expect(find.text('Équipements'), findsOneWidget);
     semantics.dispose();
+  });
+
+  testWidgets('recette à tester : étiquette au-dessus du titre', (
+    tester,
+  ) async {
+    final catalog = const CatalogParser()
+        .parse(File('assets/data/recipes.json').readAsStringSync())
+        .catalog;
+    await pumpYumly(tester, prefs: await freshPrefs(), catalog: catalog);
+    await tester.enterText(find.byType(TextField), 'brioche');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Brioche perdue').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('À tester'), findsOneWidget);
   });
 
   testWidgets('changer le nombre de personnes recalcule les quantités', (
@@ -137,7 +159,7 @@ void main() {
     );
   });
 
-  testWidgets('favori basculé depuis la carte et visible dans Favoris', (
+  testWidgets('favori basculé depuis la fiche et visible dans Favoris', (
     tester,
   ) async {
     await pumpYumly(tester, prefs: await freshPrefs());
@@ -148,7 +170,10 @@ void main() {
 
     await tester.tap(navTab('Accueil'));
     await tester.pumpAndSettle();
-    await scrollTo(tester, find.byTooltip('Ajouter « Guacamole » aux favoris'));
+    final card = find.widgetWithText(RecipeCard, 'Guacamole');
+    await scrollTo(tester, card);
+    await tester.tap(card);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Ajouter « Guacamole » aux favoris'));
     await tester.pumpAndSettle();
     expect(find.text('Ajoutée aux favoris'), findsOneWidget);

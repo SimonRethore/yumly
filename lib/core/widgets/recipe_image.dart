@@ -100,7 +100,7 @@ class _RibbonPainter extends CustomPainter {
     _height,
   );
   static const TextStyle _textStyle = TextStyle(
-    color: AppColors.vertForetSurJaune,
+    color: AppColors.blanc,
     fontSize: 10,
     fontWeight: FontWeight.w700,
     height: 1,
@@ -134,7 +134,7 @@ class _RibbonPainter extends CustomPainter {
         _rect,
         const BoxShadow(color: Color(0x7F000000), blurRadius: 6).toPaint(),
       )
-      ..drawRect(_rect, Paint()..color = AppColors.jauneSoleil);
+      ..drawRect(_rect, Paint()..color = AppColors.vertForet);
     final text = TextPainter(
       text: TextSpan(text: message, style: _textStyle),
       textAlign: TextAlign.center,

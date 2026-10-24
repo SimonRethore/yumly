@@ -10,6 +10,7 @@ import '../../shopping_list/presentation/add_to_list.dart';
 import '../domain/controlled_values.dart';
 import '../domain/recipe.dart';
 import '../domain/recipe_filters.dart';
+import 'difficulty_gauge.dart';
 
 /// Badges les plus pertinents d'une recette, sans surcharger la carte :
 /// régime le plus strict, puis origine.
@@ -54,22 +55,31 @@ class RecipeBadge extends StatelessWidget {
   }
 }
 
-/// Métadonnée icône + texte (durée, difficulté), ou emoji + texte (drapeau).
+/// Métadonnée icône + texte (durée), emoji + texte (drapeau), ou jauge +
+/// texte (difficulté).
 class RecipeMeta extends StatelessWidget {
   const RecipeMeta({
     super.key,
     required IconData this.icon,
     required this.label,
-  }) : emoji = null;
+  }) : emoji = null,
+       difficulty = null;
 
   const RecipeMeta.emoji({
     super.key,
     required String this.emoji,
     required this.label,
-  }) : icon = null;
+  }) : icon = null,
+       difficulty = null;
+
+  RecipeMeta.difficulty({super.key, required Difficulty this.difficulty})
+    : label = difficulty.label,
+      icon = null,
+      emoji = null;
 
   final IconData? icon;
   final String? emoji;
+  final Difficulty? difficulty;
   final String label;
 
   @override
@@ -81,6 +91,8 @@ class RecipeMeta extends StatelessWidget {
           ExcludeSemantics(
             child: Text(emoji!, style: const TextStyle(fontSize: 16)),
           )
+        else if (difficulty != null)
+          DifficultyGauge(difficulty: difficulty!)
         else
           Icon(icon, size: 16, color: AppColors.vertForet),
         const SizedBox(width: 4),
@@ -93,10 +105,31 @@ class RecipeMeta extends StatelessWidget {
 }
 
 class RecipeCard extends ConsumerWidget {
-  const RecipeCard({super.key, required this.recipe, required this.onTap});
+  const RecipeCard({
+    super.key,
+    required this.recipe,
+    required this.onTap,
+    this.imageAspectRatio = 16 / 10,
+    this.showActions = true,
+    this.showBadges = true,
+    this.compactTitle = false,
+  });
 
   final Recipe recipe;
   final VoidCallback onTap;
+
+  /// Photo plus haute dans une carte étroite.
+  final double imageAspectRatio;
+
+  /// Boutons favori et liste de courses sur la photo.
+  final bool showActions;
+
+  /// Badges régime, origine ou type de plat sous la durée.
+  final bool showBadges;
+
+  /// Titre sur deux lignes au plus (« … » au-delà), avec toujours la place
+  /// de deux lignes : les cartes gardent la même hauteur.
+  final bool compactTitle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -116,76 +149,98 @@ class RecipeCard extends ConsumerWidget {
               children: [
                 RecipeImage(
                   asset: recipe.imageAsset,
+                  aspectRatio: imageAspectRatio,
                   ribbon: recipeRibbon(recipe),
                 ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: FavoriteButton(
-                    recipeId: recipe.id,
-                    recipeTitle: recipe.title,
-                    onImage: true,
+                if (showActions) ...[
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: FavoriteButton(
+                      recipeId: recipe.id,
+                      recipeTitle: recipe.title,
+                      onImage: true,
+                    ),
                   ),
-                ),
+                  Positioned(
+                    right: 8,
+                    bottom: 8,
+                    child: IconButton(
+                      tooltip: inList
+                          ? '« ${recipe.title} » est dans la liste de courses'
+                          : 'Ajouter « ${recipe.title} » à la liste de courses',
+                      isSelected: inList,
+                      style: IconButton.styleFrom(
+                        backgroundColor: inList
+                            ? AppColors.saugeClair
+                            : AppColors.jauneSoleil,
+                      ),
+                      icon: const Icon(Icons.add_shopping_cart),
+                      selectedIcon: const Icon(Icons.playlist_add_check),
+                      onPressed: () => addRecipeFromCard(context, ref, recipe),
+                    ),
+                  ),
+                ],
               ],
             ),
+            // Boutons sur la photo : le texte garde toute la largeur de la
+            // carte.
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  if (compactTitle)
+                    Stack(
                       children: [
-                        Text(recipe.title, style: theme.textTheme.titleMedium),
-                        const SizedBox(height: 6),
-                        Wrap(
-                          spacing: 12,
-                          runSpacing: 4,
-                          children: [
-                            RecipeMeta(
-                              icon: Icons.schedule,
-                              label: QuantityFormatter.formatDuration(
-                                recipe.totalTimeMinutes,
-                              ),
+                        // Réserve la hauteur de deux lignes à la taille de
+                        // texte du système.
+                        ExcludeSemantics(
+                          child: Opacity(
+                            opacity: 0,
+                            child: Text(
+                              '\n',
+                              maxLines: 2,
+                              style: theme.textTheme.titleMedium,
                             ),
-                            if (recipe.difficulty != null)
-                              RecipeMeta(
-                                icon: Icons.signal_cellular_alt,
-                                label: recipe.difficulty!.label,
-                              ),
-                          ],
+                          ),
                         ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: [
-                            for (final badge in recipeBadges(recipe))
-                              RecipeBadge(
-                                label: badge.label,
-                                color: badge.color,
-                              ),
-                          ],
+                        Text(
+                          recipe.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleMedium,
                         ),
                       ],
-                    ),
+                    )
+                  else
+                    Text(recipe.title, style: theme.textTheme.titleMedium),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 4,
+                    children: [
+                      RecipeMeta(
+                        icon: Icons.schedule,
+                        label: QuantityFormatter.formatDuration(
+                          recipe.totalTimeMinutes,
+                        ),
+                      ),
+                      if (recipe.difficulty != null)
+                        RecipeMeta.difficulty(difficulty: recipe.difficulty!),
+                    ],
                   ),
-                  IconButton(
-                    tooltip: inList
-                        ? '« ${recipe.title} » est dans la liste de courses'
-                        : 'Ajouter « ${recipe.title} » à la liste de courses',
-                    isSelected: inList,
-                    style: IconButton.styleFrom(
-                      backgroundColor: inList
-                          ? AppColors.saugeClair
-                          : AppColors.jauneSoleil,
+                  if (showBadges) ...[
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: [
+                        for (final badge in recipeBadges(recipe))
+                          RecipeBadge(label: badge.label, color: badge.color),
+                      ],
                     ),
-                    icon: const Icon(Icons.add_shopping_cart),
-                    selectedIcon: const Icon(Icons.playlist_add_check),
-                    onPressed: () => addRecipeFromCard(context, ref, recipe),
-                  ),
+                  ],
                 ],
               ),
             ),

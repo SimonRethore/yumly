@@ -38,9 +38,12 @@ Future<void> runEssentialJourney(
   await tester.pumpAndSettle();
   expect(find.text('1 recette'), findsOneWidget);
   await _tapAndSettle(tester, find.byTooltip('Effacer la recherche'));
-  await _tapAndSettle(tester, find.text('Filtres'));
+  await _tapAndSettle(tester, find.byTooltip('Filtres'));
+  await scrollSheetTo(tester, find.widgetWithText(FilterChip, '🇮🇳 Indien'));
   await _tapAndSettle(tester, find.widgetWithText(FilterChip, '🇮🇳 Indien'));
   await _tapAndSettle(tester, find.text('Voir 1 recette'));
+  // Le curry est de saison : le compteur est sous le carrousel.
+  await scrollTo(tester, find.text('1 recette'));
   expect(find.text('1 recette'), findsOneWidget);
 
   // 3. Ouvrir le détail et passer à 6 personnes.
@@ -62,16 +65,16 @@ Future<void> runEssentialJourney(
 
   // 5. Ajouter une deuxième recette partageant des ingrédients.
   await _tapAndSettle(tester, find.byTooltip('Retour'));
+  // La liste est restée défilée vers le bas : remonter jusqu'au bouton.
+  await scrollTo(tester, find.text('Réinitialiser les filtres'), delta: -250);
   await _tapAndSettle(tester, find.text('Réinitialiser les filtres'));
-  await scrollTo(
-    tester,
-    find.byTooltip('Ajouter « Chili sin carne » à la liste de courses'),
-  );
-  await _tapAndSettle(
-    tester,
-    find.byTooltip('Ajouter « Chili sin carne » à la liste de courses'),
-  );
+  final chili = gridCard('Chili sin carne');
+  await scrollTo(tester, chili);
+  await _tapAndSettle(tester, chili);
+  await scrollTo(tester, find.text('Ajouter à la liste de courses'));
+  await _tapAndSettle(tester, find.text('Ajouter à la liste de courses'));
   await dismissSnackBars(tester);
+  await _tapAndSettle(tester, find.byTooltip('Retour'));
 
   // 6. Modifier les portions depuis la liste active (chili : 4 → 8).
   await _tapAndSettle(tester, _navTab('Courses'));
@@ -119,10 +122,9 @@ Future<void> runEssentialJourney(
 
   // 10. Ajouter puis retirer un favori.
   await _tapAndSettle(tester, _navTab('Accueil'));
-  await scrollTo(
-    tester,
-    find.byTooltip('Ajouter « Taboulé libanais » aux favoris'),
-  );
+  final taboule = gridCard('Taboulé libanais');
+  await scrollTo(tester, taboule);
+  await _tapAndSettle(tester, taboule);
   await _tapAndSettle(
     tester,
     find.byTooltip('Ajouter « Taboulé libanais » aux favoris'),

@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../app/theme/app_colors.dart';
-import '../../../core/formatting/quantity_formatter.dart';
 import '../../../core/widgets/brand_title.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/error_state.dart';
-import '../../../core/widgets/recipe_image.dart';
 import '../../shopping_list/presentation/shopping_list_button.dart';
 import '../data/recipe_repository.dart';
+import '../domain/controlled_values.dart';
 import '../domain/recipe.dart';
+import '../domain/recipe_filters.dart';
 import 'recipe_card.dart';
 import 'recipe_filter_sheet.dart';
 import 'recipes_controller.dart';
@@ -82,7 +82,12 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
     final notifier = ref.read(recipeFiltersProvider.notifier);
     final recipes = ref.watch(filteredRecipesProvider);
     final seasonal = ref.watch(seasonalRecipesProvider);
-    final chips = activeFilters(filters);
+    final toTest = ref.watch(toTestRecipesProvider);
+    final quickCourse = _quickCourse(filters);
+    // Le type de plat choisi par pastille rapide n'est pas répété plus bas.
+    final chips = activeFilters(
+      quickCourse == null ? filters : filters.copyWith(courses: {}),
+    );
 
     return CustomScrollView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -107,38 +112,38 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
                 decoration: InputDecoration(
                   hintText: 'Rechercher une recette, un ingrédient…',
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon: filters.query.isEmpty
-                      ? null
-                      : IconButton(
+                  suffixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (filters.query.isNotEmpty)
+                        IconButton(
                           tooltip: 'Effacer la recherche',
                           icon: const Icon(Icons.close),
                           onPressed: () => notifier.setQuery(''),
                         ),
+                      IconButton(
+                        tooltip: filters.hasActiveFilters
+                            ? 'Filtres (${filters.activeFilterCount})'
+                            : 'Filtres',
+                        onPressed: () => showRecipeFilterSheet(context),
+                        icon: Badge(
+                          isLabelVisible: filters.hasActiveFilters,
+                          label: Text('${filters.activeFilterCount}'),
+                          child: const Icon(Icons.tune),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  OutlinedButton.icon(
-                    onPressed: () => showRecipeFilterSheet(context),
-                    icon: const Icon(Icons.tune),
-                    label: Text(
-                      filters.hasActiveFilters
-                          ? 'Filtres (${filters.activeFilterCount})'
-                          : 'Filtres',
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      recipes.length > 1
-                          ? '${recipes.length} recettes'
-                          : '${recipes.length} recette',
-                      style: theme.textTheme.bodySmall,
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                ],
+              _CourseChips(
+                selected: quickCourse,
+                hasOtherCourses:
+                    quickCourse == null && filters.courses.isNotEmpty,
+                onSelected: (course) =>
+                    notifier.update((f) => f.copyWith(courses: {?course})),
               ),
               if (chips.isNotEmpty) ...[
                 const SizedBox(height: 12),
@@ -167,9 +172,23 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
             ],
           ),
         ),
-        if (filters.isEmpty && seasonal.isNotEmpty)
+        if (filters.query.trim().isEmpty && seasonal.isNotEmpty)
           SliverToBoxAdapter(
-            child: _SeasonalSection(recipes: seasonal, onOpen: _openRecipe),
+            child: RecipeCarousel(
+              title: 'De saison',
+              icon: Icons.eco_outlined,
+              recipes: seasonal,
+              onOpen: _openRecipe,
+            ),
+          ),
+        if (filters.query.trim().isEmpty && toTest.isNotEmpty)
+          SliverToBoxAdapter(
+            child: RecipeCarousel(
+              title: 'À tester',
+              icon: Icons.explore_outlined,
+              recipes: toTest,
+              onOpen: _openRecipe,
+            ),
           ),
         if (widget.catalog.recipes.isEmpty)
           const SliverFillRemaining(
@@ -195,9 +214,24 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
             sliver: SliverToBoxAdapter(
-              child: Text(
-                filters.isEmpty ? 'Toutes les recettes' : 'Résultats',
-                style: theme.textTheme.titleLarge,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Expanded(
+                    child: Text(
+                      filters.isEmpty ? 'Toutes les recettes' : 'Résultats',
+                      style: theme.textTheme.titleLarge,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    recipes.length > 1
+                        ? '${recipes.length} recettes'
+                        : '${recipes.length} recette',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
               ),
             ),
           ),
@@ -211,7 +245,7 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
   }
 }
 
-/// Grille adaptative : une colonne sur téléphone, plus sur grand écran.
+/// Grille adaptative : deux colonnes sur téléphone, plus sur grand écran.
 /// Les hauteurs restent libres pour supporter les grandes tailles de texte.
 class _RecipeGrid extends StatelessWidget {
   const _RecipeGrid({required this.recipes, required this.onOpen});
@@ -223,27 +257,34 @@ class _RecipeGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverLayoutBuilder(
       builder: (context, constraints) {
-        final columns = (constraints.crossAxisExtent / 380).floor().clamp(1, 4);
+        final columns = (constraints.crossAxisExtent / 180).floor().clamp(2, 4);
         final rows = (recipes.length / columns).ceil();
         return SliverList.builder(
           itemCount: rows,
           itemBuilder: (context, row) => Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (var col = 0; col < columns; col++) ...[
-                  if (col > 0) const SizedBox(width: 16),
-                  Expanded(
-                    child: row * columns + col < recipes.length
-                        ? RecipeCard(
-                            recipe: recipes[row * columns + col],
-                            onTap: () => onOpen(recipes[row * columns + col]),
-                          )
-                        : const SizedBox.shrink(),
-                  ),
+            padding: const EdgeInsets.only(bottom: 12),
+            // Cartes d'une même rangée à la même hauteur.
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (var col = 0; col < columns; col++) ...[
+                    if (col > 0) const SizedBox(width: 12),
+                    Expanded(
+                      child: row * columns + col < recipes.length
+                          ? RecipeCard(
+                              recipe: recipes[row * columns + col],
+                              onTap: () => onOpen(recipes[row * columns + col]),
+                              imageAspectRatio: 4 / 3,
+                              showActions: false,
+                              showBadges: false,
+                              compactTitle: true,
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         );
@@ -252,9 +293,70 @@ class _RecipeGrid extends StatelessWidget {
   }
 }
 
-class _SeasonalSection extends StatelessWidget {
-  const _SeasonalSection({required this.recipes, required this.onOpen});
+/// Types de plat proposés en pastilles rapides sous la recherche.
+const _quickCourses = [Course.petitDejeuner, Course.plat, Course.dessert];
 
+/// Type de plat choisi par pastille rapide, ou `null` si aucun filtre de type
+/// ou une autre combinaison venant de la feuille de filtres.
+Course? _quickCourse(RecipeFilters filters) =>
+    filters.courses.length == 1 &&
+        _quickCourses.contains(filters.courses.single)
+    ? filters.courses.single
+    : null;
+
+/// Pastilles « Tout, Petit-déjeuner, Plat, Dessert » : un seul type à la fois.
+class _CourseChips extends StatelessWidget {
+  const _CourseChips({
+    required this.selected,
+    required this.hasOtherCourses,
+    required this.onSelected,
+  });
+
+  final Course? selected;
+
+  /// Types choisis dans la feuille de filtres : « Tout » n'est pas actif.
+  final bool hasOtherCourses;
+  final ValueChanged<Course?> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          ChoiceChip(
+            label: const Text('Tout'),
+            selected: selected == null && !hasOtherCourses,
+            showCheckmark: false,
+            onSelected: (_) => onSelected(null),
+          ),
+          for (final course in _quickCourses) ...[
+            const SizedBox(width: 8),
+            ChoiceChip(
+              label: Text(course.label),
+              selected: selected == course,
+              showCheckmark: false,
+              onSelected: (on) => onSelected(on ? course : null),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Rubrique de l'accueil : titre et carrousel horizontal de cartes.
+class RecipeCarousel extends StatelessWidget {
+  const RecipeCarousel({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.recipes,
+    required this.onOpen,
+  });
+
+  final String title;
+  final IconData icon;
   final List<Recipe> recipes;
   final ValueChanged<Recipe> onOpen;
 
@@ -270,72 +372,38 @@ class _SeasonalSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                const Icon(Icons.eco_outlined, color: AppColors.vertForet),
+                Icon(icon, color: AppColors.vertForet),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: Text('De saison', style: theme.textTheme.titleLarge),
-                ),
+                Expanded(child: Text(title, style: theme.textTheme.titleLarge)),
               ],
             ),
           ),
           const SizedBox(height: 12),
-          SizedBox(
-            // Image 16/10 sur 180 px + zone de texte qui suit la taille système.
-            height: 113 + 24 + MediaQuery.textScalerOf(context).scale(66),
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: recipes.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                final recipe = recipes[index];
-                return SizedBox(
-                  width: 180,
-                  child: Card(
-                    child: InkWell(
-                      onTap: () => onOpen(recipe),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RecipeImage(
-                            asset: recipe.imageAsset,
-                            aspectRatio: 16 / 10,
-                            iconSize: 32,
-                            ribbon: recipeRibbon(recipe),
-                          ),
-                          // Zone de texte contrainte : le titre s'abrège
-                          // plutôt que de déborder.
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      recipe.title,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.titleSmall,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  RecipeMeta(
-                                    icon: Icons.schedule,
-                                    label: QuantityFormatter.formatDuration(
-                                      recipe.totalTimeMinutes,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+          // Mêmes cartes que la grille ; la rangée prend la hauteur de la
+          // plus grande carte, sans hauteur codée en dur.
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final (index, recipe) in recipes.indexed) ...[
+                    if (index > 0) const SizedBox(width: 12),
+                    SizedBox(
+                      width: 180,
+                      child: RecipeCard(
+                        recipe: recipe,
+                        onTap: () => onOpen(recipe),
+                        imageAspectRatio: 4 / 3,
+                        showActions: false,
+                        showBadges: false,
+                        compactTitle: true,
                       ),
                     ),
-                  ),
-                );
-              },
+                  ],
+                ],
+              ),
             ),
           ),
         ],

@@ -27,4 +27,10 @@ abstract final class AppColors {
 
   /// Corail assombri pour un texte d'erreur lisible sur fond clair.
   static const Color corailFonce = Color(0xFFB3352A);
+
+  /// Jauge de difficulté : vert, orange, rouge, et barres non remplies.
+  static const Color difficulteFacile = Color(0xFF3E9B4F);
+  static const Color difficulteMoyen = Color(0xFFF08C1E);
+  static const Color difficulteDifficile = Color(0xFFD93B2B);
+  static const Color jaugeVide = Color(0xFFDCD2C3);
 }
