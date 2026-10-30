@@ -24,8 +24,8 @@ void main() {
       // (horloge des tests au 10 octobre).
       expect(find.text('De saison'), findsOneWidget);
       // Le compteur est sous les rubriques de l'accueil.
-      await scrollTo(tester, find.text('21 recettes'));
-      expect(find.text('21 recettes'), findsOneWidget);
+      await scrollTo(tester, find.text('43 recettes'));
+      expect(find.text('43 recettes'), findsOneWidget);
       // Ordre alphabétique par défaut : les cartes sont plus bas.
       await scrollTo(tester, find.widgetWithText(RecipeCard, 'Flammekueche'));
       await scrollTo(
@@ -154,9 +154,17 @@ void main() {
     expect(find.byTooltip('Filtres (3)'), findsOneWidget);
     expect(find.widgetWithText(InputChip, '🇲🇽 Mexicain'), findsOneWidget);
     expect(find.text('1 recette'), findsOneWidget);
+    // Un seul type de plat : repris par sa pastille rapide, pas en double.
+    expect(find.widgetWithText(InputChip, 'Apéritif'), findsNothing);
+    expect(
+      tester
+          .widget<ChoiceChip>(find.widgetWithText(ChoiceChip, 'Apéritif'))
+          .selected,
+      isTrue,
+    );
 
     // Retirer un filtre ne réinitialise pas les autres.
-    await tester.tap(find.byTooltip('Retirer le filtre Apéritif'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Tout'));
     await tester.pumpAndSettle();
     expect(find.byTooltip('Filtres (2)'), findsOneWidget);
     // Curry et chili de saison : le compteur est sous le carrousel.
@@ -183,8 +191,14 @@ void main() {
       await tester.pumpAndSettle();
     }
 
+    // Tous les types du catalogue, dans l'ordre du repas.
+    final labels = tester
+        .widgetList<ChoiceChip>(find.byType(ChoiceChip))
+        .map((c) => (c.label as Text).data)
+        .toList();
+    expect(labels, ['Tout', 'Apéritif', 'Entrée', 'Plat', 'Dessert']);
     expect(isSelected('Tout'), isTrue);
-    expect(isSelected('Petit-déjeuner'), isFalse);
+    expect(isSelected('Entrée'), isFalse);
     expect(find.text('8 recettes'), findsOneWidget);
 
     await tapChip('Dessert');
@@ -280,7 +294,7 @@ void main() {
     expect(seasonalOrder.length, greaterThan(1));
 
     // Ordre alphabétique par défaut.
-    expect(await firstCard(), 'Brioche perdue');
+    expect(await firstCard(), 'Aiguillettes de poulet façon teriyaki');
 
     Future<void> choose(String label) async {
       await scrollTo(tester, find.byTooltip('Filtres'), delta: -250);
@@ -288,7 +302,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(ChoiceChip, label));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Voir 21 recettes'));
+      await tester.tap(find.text('Voir 43 recettes'));
       await tester.pumpAndSettle();
     }
 

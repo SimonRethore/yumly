@@ -83,6 +83,8 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
     final recipes = ref.watch(filteredRecipesProvider);
     final seasonal = ref.watch(seasonalRecipesProvider);
     final toTest = ref.watch(toTestRecipesProvider);
+    final courses =
+        ref.watch(filterOptionsProvider)?.courses ?? const <Course>[];
     final quickCourse = _quickCourse(filters);
     // Le type de plat choisi par pastille rapide n'est pas répété plus bas.
     final chips = activeFilters(
@@ -139,6 +141,7 @@ class _CatalogViewState extends ConsumerState<_CatalogView> {
               ),
               const SizedBox(height: 12),
               _CourseChips(
+                courses: courses,
                 selected: quickCourse,
                 hasOtherCourses:
                     quickCourse == null && filters.courses.isNotEmpty,
@@ -293,25 +296,22 @@ class _RecipeGrid extends StatelessWidget {
   }
 }
 
-/// Types de plat proposés en pastilles rapides sous la recherche.
-const _quickCourses = [Course.petitDejeuner, Course.plat, Course.dessert];
-
 /// Type de plat choisi par pastille rapide, ou `null` si aucun filtre de type
-/// ou une autre combinaison venant de la feuille de filtres.
+/// ou plusieurs types choisis dans la feuille de filtres.
 Course? _quickCourse(RecipeFilters filters) =>
-    filters.courses.length == 1 &&
-        _quickCourses.contains(filters.courses.single)
-    ? filters.courses.single
-    : null;
+    filters.courses.length == 1 ? filters.courses.single : null;
 
-/// Pastilles « Tout, Petit-déjeuner, Plat, Dessert » : un seul type à la fois.
+/// Pastilles « Tout » puis chaque type de plat du catalogue, dans l'ordre du
+/// repas : un seul type à la fois.
 class _CourseChips extends StatelessWidget {
   const _CourseChips({
+    required this.courses,
     required this.selected,
     required this.hasOtherCourses,
     required this.onSelected,
   });
 
+  final List<Course> courses;
   final Course? selected;
 
   /// Types choisis dans la feuille de filtres : « Tout » n'est pas actif.
@@ -330,7 +330,7 @@ class _CourseChips extends StatelessWidget {
             showCheckmark: false,
             onSelected: (_) => onSelected(null),
           ),
-          for (final course in _quickCourses) ...[
+          for (final course in courses) ...[
             const SizedBox(width: 8),
             ChoiceChip(
               label: Text(course.label),

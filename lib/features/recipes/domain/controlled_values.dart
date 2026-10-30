@@ -28,13 +28,14 @@ enum DietType implements ControlledValue {
   static DietType? fromId(String id) => _byId(values, id);
 }
 
+/// Types de plat, dans l'ordre de la journée et du repas.
 enum Course implements ControlledValue {
+  petitDejeuner('petit_dejeuner', 'Petit-déjeuner'),
   aperitif('aperitif', 'Apéritif'),
   entree('entree', 'Entrée'),
   plat('plat', 'Plat'),
   accompagnement('accompagnement', 'Accompagnement'),
   dessert('dessert', 'Dessert'),
-  petitDejeuner('petit_dejeuner', 'Petit-déjeuner'),
   boisson('boisson', 'Boisson');
 
   const Course(this.id, this.label);

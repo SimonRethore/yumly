@@ -117,6 +117,28 @@ Les valeurs contrôlées inconnues (faute de frappe, nouvelle valeur) sont
 | `order` | entier ≥ 1 | oui         | Unique dans la recette. Les étapes sont triées par `order`. |
 | `text`  | texte      | oui         | `\n` pour un retour à la ligne.                     |
 
+Le texte des étapes n'est pas mis à l'échelle quand on change le nombre de
+personnes. Si une étape donne la quantité d'un ingrédient absent de la liste
+`ingredients` (l'eau, par exemple), elle ne doit jamais être un total :
+
+- **Liquide absorbé par une céréale ou une légumineuse** (riz, semoule,
+  boulgour, orzo, lentilles…), y compris le bouillon de cuisson : proportion
+  par rapport à cet ingrédient, qui reste juste quel que soit le nombre de
+  personnes. « Délayer le cube de bouillon dans de l'eau chaude, à raison de
+  23 cl pour 100 g de riz. »
+- **Autres cas** (sauce, bouillon de mijotage, eau d'une sauce…) : quantité
+  **par personne**. « Délayer le cube de bouillon dans 7,5 cl d'eau chaude
+  par personne », « verser 1 à 2 c. à s. d'eau par personne ».
+
+Les sauces réduisent plus ou moins vite selon la quantité : y ajouter une
+mention du type « ajouter un peu d'eau si la sauce épaissit trop ».
+
+Pour un ingrédient **de la liste**, l'étape ne recopie pas sa quantité : elle
+le désigne (« ajouter la farine ») ou en donne une part relative (« la moitié
+des tranches de pain de mie », « le beurre, en gardant une noix pour la
+plaque »). Une quantité par personne reste possible quand l'ingrédient est
+réparti entre plusieurs étapes (« 1 c. à c. d'épices par personne »).
+
 ## Exemple minimal
 
 ```json

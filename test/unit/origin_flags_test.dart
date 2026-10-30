@@ -14,6 +14,7 @@ void main() {
       expect(OriginFlags.of('Breton'), '🇫🇷');
       expect(OriginFlags.of('Bretonne'), '🇫🇷');
       expect(OriginFlags.of('Alsacien'), '🇫🇷');
+      expect(OriginFlags.of('Basque'), '🇫🇷');
       expect(OriginFlags.of('Tex-Mex'), '🇺🇸');
     });
 

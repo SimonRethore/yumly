@@ -1,52 +1,69 @@
 # TODO RECIPES
 
-## Entrée (7)
+## Petit-déjeuner (2)
+
+- Gaufres
+- Œufs Bénédicte
+
+## Entrée (8)
 
 - Beignet de crevettes
-- Cake aux courgettes & chorizo : https://jow.fr/recipes/cake-aux-courgettes-et-chorizo-9bps2sb91si073zw0l6o
-- Cake salé au jambon et aux olives : https://www.marmiton.org/recettes/recette_cake-sale-au-jambon-et-aux-olives_18876.aspx
 - Feuilleté de saucisse
+- Gyozas
+- Nems
 - Préfou à l’ail
 - Salade de riz au surimi : https://jow.fr/recipes/salade-de-riz-au-surimi-8t7pc8jrbdmohqfn09l4
 - Samoussa
+- Velouté de potimarron
 
-## Plat (27)
+## Plat (25)
 
-- Aiguillettes de poulet façon teriyaki : https://www.hellofresh.fr/recipes/aiguillettes-de-poulet-facon-teriyaki-64d3b20ec6d2a3702a70fd91
-- Bibimbap coréen porc haché & sésame : https://www.hellofresh.fr/recipes/bibimbap-coreen-porc-hache-and-sesame-64073f18683721c9a32b08d0
+- Bagel Oeuf Bacon
+- Bagel Saumon Avocat
+- Bò bún
 - Boeuf bourguignon : https://www.marmiton.org/recettes/recette_boeuf-bourguignon_18889.aspx
-- Bowl
 - Burger
-- burritos
+- Chakchouka verde
 - Cordon bleu
+- Couscous royal
+- Enchiladas au poulet
+- French Tacos
 - Fish and Chips : https://www.tables-auberges.com/recettes/fish-and-chips-traditionnel
-- grattin dauphinois
-- Gyudon : http://hellofresh.fr/recipes/gyudon-bowl-de-boeuf-a-la-japonaise-64108555fd78b79c42eb50b8
 - Hot Dog ???
-- Mijoté de poulet & confit d'abricots : https://www.hellofresh.fr/recipes/mijote-de-poulet-sucre-sale-aux-amandes-67d99adbdffcefea9daafca6
-- Nasi goreng : riz sauté indonésien au poulet : https://www.hellofresh.fr/recipes/nasi-goreng-riz-saute-indonesien-au-poulet-66752ed4011c8aeaadadcdb5
-- Nouilles au bœuf sauté à la thaï : https://www.hellofresh.fr/recipes/nouilles-au-boeuf-saute-a-la-thai-62bb06b54bc0527b6403986a
-- Orzo & crevettes sauce ail, citron & persil : https://www.hellofresh.fr/recipes/orzo-and-crevettes-sauce-ail-citron-and-persil-62666cf7d36e63ae840fae24
 - Paella
-- pate carbo
-- Pizza ???
+- Pâtes au pesto et burrata
+- Poke bowl
 - Porc sauté & tomates à la chinoise: https://www.hellofresh.fr/recipes/stir-fry-porc-and-tomates-a-la-chinoise-67d99aaedffcefea9daafbc4
 - Pot-au-feu
-- Poulet basquaise : https://www.marmiton.org/recettes/recette_poulet-basquaise_16969.aspx
+- Poulet Tandoori
 - Poulet Teryaki
-- Quiche Loraine
 - Ramen : https://lacerisesurlemaillot.fr/ramen-poulet-facile/
 - Risotto
 - Saint-Jacques
+- Sushi
 - Tenders
+- Wraps
+
+## Accompagnement (5)
+
+- Frites de patate douce
+- Naan à l'ail
+- Pomme de terres en boules
+- Pommes aux groseilles
+- Pommes de terre sarladaises
+- Purée maison
 
 ## Dessert (8)
 
 - Beignet aux pommes
 - Brownie
-- Cookie
+- Crème brûlée
 - Fondant au chocolat
+- Gâteau au yaourt
 - Île flottante
 - Mousse au chocolat
-- Pancake
 - Tarte aux pommes
+
+## À revoir
+
+- Unité de portion : l’application compte toujours en personnes (`servingsLabel`). Ajouter un champ du type `servingsUnit` pour afficher « 12 muffins » plutôt que « 6 personnes » (muffins, crêpes, pancakes, cookies).

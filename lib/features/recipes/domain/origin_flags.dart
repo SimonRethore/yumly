@@ -8,6 +8,7 @@ abstract final class OriginFlags {
   static const Map<String, String> _countries = {
     // Régions, rattachées à leur pays.
     'alsacien': 'FR',
+    'basque': 'FR',
     'breton': 'FR',
     'bretonne': 'FR',
     'tex-mex': 'US',

@@ -63,9 +63,13 @@ final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
 /// Générateur aléatoire injectable (ordre des rubriques de l'accueil).
 final randomProvider = Provider<Random>((ref) => Random());
 
-/// Rang aléatoire de chaque recette, tiré une fois par lancement : l'ordre
-/// des rubriques ne change pas quand on filtre.
-final _carouselRanksProvider = Provider<Map<String, int>>((ref) {
+/// Rang aléatoire de chaque recette, tiré une fois par lancement et par
+/// rubrique : l'ordre d'une rubrique ne change pas quand on filtre, et deux
+/// rubriques n'ont pas le même ordre.
+final _carouselRanksProvider = Provider.family<Map<String, int>, String>((
+  ref,
+  carousel,
+) {
   final catalog = ref.watch(catalogProvider).value;
   if (catalog == null) return const {};
   final ids = [for (final recipe in catalog.recipes) recipe.id]
@@ -73,14 +77,19 @@ final _carouselRanksProvider = Provider<Map<String, int>>((ref) {
   return {for (final (rank, id) in ids.indexed) id: rank};
 });
 
-/// Recettes d'une rubrique de l'accueil : celles qui passent les filtres et
-/// [include] (la recherche texte n'est pas prise en compte : les rubriques
-/// sont masquées pendant une recherche), dans l'ordre aléatoire du lancement.
-List<Recipe> _carouselRecipes(Ref ref, bool Function(Recipe) include) {
+/// Recettes de la rubrique [carousel] de l'accueil : celles qui passent les
+/// filtres et [include] (la recherche texte n'est pas prise en compte : les
+/// rubriques sont masquées pendant une recherche), dans l'ordre aléatoire du
+/// lancement.
+List<Recipe> _carouselRecipes(
+  Ref ref,
+  String carousel,
+  bool Function(Recipe) include,
+) {
   final catalog = ref.watch(catalogProvider).value;
   if (catalog == null) return const [];
   final filters = ref.watch(recipeFiltersProvider).copyWith(query: '');
-  final ranks = ref.watch(_carouselRanksProvider);
+  final ranks = ref.watch(_carouselRanksProvider(carousel));
   return filters.apply(catalog.recipes).where(include).toList()
     ..sort((a, b) => ranks[a.id]!.compareTo(ranks[b.id]!));
 }
@@ -89,10 +98,10 @@ List<Recipe> _carouselRecipes(Ref ref, bool Function(Recipe) include) {
 /// le mois courant. Calculé uniquement à partir des données du catalogue.
 final seasonalRecipesProvider = Provider<List<Recipe>>((ref) {
   final month = ref.watch(clockProvider)().month;
-  return _carouselRecipes(ref, (r) => r.months.contains(month));
+  return _carouselRecipes(ref, 'saison', (r) => r.months.contains(month));
 });
 
 /// Rubrique « À tester » : recettes pas encore réalisées.
 final toTestRecipesProvider = Provider<List<Recipe>>(
-  (ref) => _carouselRecipes(ref, (r) => !r.done),
+  (ref) => _carouselRecipes(ref, 'a_tester', (r) => !r.done),
 );
