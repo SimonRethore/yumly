@@ -24,8 +24,8 @@ void main() {
       // (horloge des tests au 10 octobre).
       expect(find.text('De saison'), findsOneWidget);
       // Le compteur est sous les rubriques de l'accueil.
-      await scrollTo(tester, find.text('43 recettes'));
-      expect(find.text('43 recettes'), findsOneWidget);
+      await scrollTo(tester, find.text('55 recettes'));
+      expect(find.text('55 recettes'), findsOneWidget);
       // Ordre alphabétique par défaut : les cartes sont plus bas.
       await scrollTo(tester, find.widgetWithText(RecipeCard, 'Flammekueche'));
       await scrollTo(
@@ -302,7 +302,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(ChoiceChip, label));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Voir 43 recettes'));
+      await tester.tap(find.text('Voir 55 recettes'));
       await tester.pumpAndSettle();
     }
 

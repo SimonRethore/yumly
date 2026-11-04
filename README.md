@@ -14,6 +14,21 @@ courses et cases cochées restent sur l'appareil.
 Référence produit : [`assets/INITIAL_SPEC.md`](assets/INITIAL_SPEC.md). Charte graphique :
 [`assets/charte_graphique.png`](assets/charte_graphique.png).
 
+## Aperçu
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/1-accueil.png" width="250" alt="Accueil"/></td>
+    <td align="center"><img src="docs/screenshots/2-recette.png" width="250" alt="Fiche recette"/></td>
+    <td align="center"><img src="docs/screenshots/3-ingredients.png" width="250" alt="Ingrédients"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/4-preparation.png" width="250" alt="Préparation"/></td>
+    <td align="center"><img src="docs/screenshots/5-liste-de-courses.png" width="250" alt="Liste de courses"/></td>
+    <td align="center"><img src="docs/screenshots/6-ingredients-a-acheter.png" width="250" alt="Ingrédients à acheter"/></td>
+  </tr>
+</table>
+
 ## Prérequis
 
 - Flutter **stable 3.47** ou plus récent (Dart 3.13), testé avec Flutter 3.47.7.
@@ -52,6 +67,24 @@ flutter test integration_test   # parcours essentiel sur appareil / émulateur
 | `test/widget/`         | Catalogue, filtres, fiche, portions, favoris, liste, ingrédients, copie, texte ×2 |
 | `test/integration/`    | Parcours essentiel complet, exécuté par `flutter test` sans appareil |
 | `integration_test/`    | Même parcours sur appareil réel (`journey.dart` partagé)             |
+
+### Captures d'écran
+
+Les captures de l'aperçu (`docs/screenshots/`) se régénèrent depuis un
+téléphone Android branché, avec l'application en release installée :
+
+```bash
+flutter build apk --release
+adb install -r build/app/outputs/flutter-apk/app-release.apk   # garde les données
+python3 tool/screenshots.py                                    # --device <id> si plusieurs appareils
+```
+
+Le téléphone doit être déverrouillé, en français, avec une liste de courses
+contenant quelques produits cochés ; ne pas le toucher pendant la capture.
+Le script (Python 3 et Pillow) ne modifie aucune donnée : il trouve les
+éléments par leur libellé d'accessibilité, fait défiler, capture, puis rogne
+les barres système. La recette montrée est réglée en tête du script
+(`RECIPE_QUERY`, `RECIPE_TITLE`).
 
 ## Architecture
 
@@ -112,8 +145,9 @@ Le catalogue intégré contient les recettes personnelles. Les 8 recettes de dé
 
 1. Déposer le fichier dans `assets/recipes/` (JPEG 16:10, ~1600 × 1000 px,
    < 300 Ko, droits vérifiés).
-2. Référencer son chemin dans `imageAsset` (ex.
-   `assets/recipes/soupe-poireaux.jpg`).
+2. Le nommer `<numéro>-<slug>.jpg` d’après l’identifiant de la recette
+   (`soupe-poireaux-009` → `9-soupe-poireaux.jpg`) et référencer son chemin
+   dans `imageAsset` (ex. `assets/recipes/9-soupe-poireaux.jpg`).
 3. Relancer la compilation (`flutter run`) : aucune autre déclaration n'est
    nécessaire. Une image absente est remplacée par un placeholder et
    signalée dans la console (`[Yumly] Catalogue : …`).

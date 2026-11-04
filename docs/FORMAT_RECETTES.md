@@ -148,7 +148,7 @@ réparti entre plusieurs étapes (« 1 c. à c. d'épices par personne »).
     {
       "id": "soupe-poireaux-009",
       "title": "Soupe de poireaux",
-      "imageAsset": "assets/recipes/soupe-poireaux.jpg",
+      "imageAsset": "assets/recipes/9-soupe-poireaux.jpg",
       "dietTypes": ["vegetarian"],
       "course": "entree",
       "months": [11, 12, 1, 2],
