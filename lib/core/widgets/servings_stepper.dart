@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../features/recipes/domain/recipe.dart';
+import '../../features/recipes/domain/servings_unit.dart';
 
-String servingsLabel(int servings) =>
-    servings > 1 ? '$servings personnes' : '$servings personne';
+/// « 4 personnes » par défaut, ou « 12 cannelés » selon [unit].
+String servingsLabel(
+  int servings, [
+  ServingsUnit unit = ServingsUnit.personnes,
+]) => unit.label(servings);
 
-/// Sélecteur du nombre de personnes (entier de 1 à 100).
+/// Sélecteur du nombre de portions (entier de 1 à 100), en personnes ou en
+/// pièces selon [unit].
 class ServingsStepper extends StatelessWidget {
   const ServingsStepper({
     super.key,
     required this.value,
     required this.onChanged,
     this.compact = false,
+    this.unit = ServingsUnit.personnes,
   });
 
   final int value;
+  final ServingsUnit unit;
   final ValueChanged<int> onChanged;
   final bool compact;
 
@@ -35,28 +42,28 @@ class ServingsStepper extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.remove),
-            tooltip: 'Retirer une personne',
+            tooltip: unit.decreaseTooltip,
             onPressed: canDecrease ? () => onChanged(value - 1) : null,
           ),
           Flexible(
             child: Semantics(
               liveRegion: true,
-              label: 'Nombre de personnes : $value',
+              label: unit.semanticsLabel(value),
               excludeSemantics: true,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.people_outline,
+                    Icon(
+                      unit.isPersons ? Icons.people_outline : Icons.tag,
                       size: 20,
                       color: AppColors.vertForet,
                     ),
                     const SizedBox(width: 6),
                     Flexible(
                       child: Text(
-                        compact ? '$value' : servingsLabel(value),
+                        compact ? '$value' : servingsLabel(value, unit),
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: AppColors.vertForet,
                         ),
@@ -69,7 +76,7 @@ class ServingsStepper extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'Ajouter une personne',
+            tooltip: unit.increaseTooltip,
             onPressed: canIncrease ? () => onChanged(value + 1) : null,
           ),
         ],

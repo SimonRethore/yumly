@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/recipe_repository.dart';
+import '../domain/controlled_values.dart';
 import '../domain/recipe.dart';
 import '../domain/recipe_filters.dart';
 import '../domain/recipe_sort.dart';
@@ -95,13 +96,22 @@ List<Recipe> _carouselRecipes(
 }
 
 /// Rubrique « De saison » : recettes dont les mois de saisonnalité incluent
-/// le mois courant. Calculé uniquement à partir des données du catalogue.
+/// le mois courant, hors recettes à revoir. Calculé uniquement à partir des
+/// données du catalogue.
 final seasonalRecipesProvider = Provider<List<Recipe>>((ref) {
   final month = ref.watch(clockProvider)().month;
-  return _carouselRecipes(ref, 'saison', (r) => r.months.contains(month));
+  return _carouselRecipes(
+    ref,
+    'saison',
+    (r) => r.months.contains(month) && r.status != RecipeStatus.aRevoir,
+  );
 });
 
 /// Rubrique « À tester » : recettes pas encore réalisées.
 final toTestRecipesProvider = Provider<List<Recipe>>(
-  (ref) => _carouselRecipes(ref, 'a_tester', (r) => !r.done),
+  (ref) => _carouselRecipes(
+    ref,
+    'a_tester',
+    (r) => r.status == RecipeStatus.aTester,
+  ),
 );

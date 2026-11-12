@@ -78,6 +78,22 @@ enum Difficulty implements ControlledValue {
   static Difficulty? fromId(String id) => _byId(values, id);
 }
 
+/// Statut d'une recette (champ `status` du catalogue), dans l'ordre des
+/// filtres.
+enum RecipeStatus implements ControlledValue {
+  realisee('realisee', 'Déjà réalisée'),
+  aTester('a_tester', 'À tester'),
+  aRevoir('a_revoir', 'À revoir');
+
+  const RecipeStatus(this.id, this.label);
+  @override
+  final String id;
+  @override
+  final String label;
+
+  static RecipeStatus? fromId(String id) => _byId(values, id);
+}
+
 /// Catégories de produits de la liste de courses, dans l'ordre d'affichage.
 enum IngredientCategory implements ControlledValue {
   fruitsLegumes('fruits_legumes', 'Fruits et légumes'),

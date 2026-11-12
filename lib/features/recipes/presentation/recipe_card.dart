@@ -9,7 +9,6 @@ import '../../shopping_list/data/shopping_list_repository.dart';
 import '../../shopping_list/presentation/add_to_list.dart';
 import '../domain/controlled_values.dart';
 import '../domain/recipe.dart';
-import '../domain/recipe_filters.dart';
 import 'difficulty_gauge.dart';
 
 /// Badges les plus pertinents d'une recette, sans surcharger la carte :
@@ -28,9 +27,9 @@ List<({String label, Color color})> recipeBadges(Recipe recipe, {int max = 2}) {
   return badges.take(max).toList();
 }
 
-/// Ruban affiché sur la photo d'une recette pas encore réalisée.
+/// Ruban affiché sur la photo d'une recette à tester ou à revoir.
 String? recipeRibbon(Recipe recipe) =>
-    recipe.done ? null : RecipeStatus.aTester.label;
+    recipe.status == RecipeStatus.realisee ? null : recipe.status.label;
 
 class RecipeBadge extends StatelessWidget {
   const RecipeBadge({super.key, required this.label, required this.color});

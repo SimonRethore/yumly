@@ -12,6 +12,7 @@ abstract final class OriginFlags {
     'breton': 'FR',
     'bretonne': 'FR',
     'hawaien': 'US',
+    'reunionnais': 'FR',
     'tex-mex': 'US',
     // Pays.
     'algerien': 'DZ',

@@ -38,12 +38,13 @@ Un catalogue d'une version inconnue est **rejeté** avec un message explicite
 | `prepTimeMinutes` | entier ≥ 0        | non (0)     |                                                               |
 | `cookTimeMinutes` | entier ≥ 0        | non (0)     | Alimente le filtre « Temps de cuisson ».                      |
 | `restTimeMinutes` | entier ≥ 0        | non (0)     | Durée totale = préparation + cuisson + repos.                 |
-| `defaultServings` | entier ≥ 1        | oui         | Nombre de personnes des quantités de base.                    |
+| `defaultServings` | entier ≥ 1        | oui         | Nombre de portions des quantités de base (personnes, ou pièces si `servingsUnit`). |
+| `servingsUnit`    | objet             | non         | Compter en pièces plutôt qu'en personnes : `{ "singular": "cannelé", "plural": "cannelés" }`. Les deux textes sont obligatoires. Absent → personnes. |
 | `ingredients`     | liste             | oui         | Ordonnée, voir ci-dessous.                                    |
 | `steps`           | liste             | oui         | Voir ci-dessous.                                              |
 | `equipment`       | liste de textes   | non         | Section masquée si vide.                                      |
 | `sourceUrl`       | texte             | non         | Lien vers la recette d'origine, adresse `http` ou `https` complète. |
-| `done`            | booléen           | non (`true`) | Recette déjà réalisée. `false` pour une recette pas encore testée. |
+| `status`          | valeur contrôlée  | non (`realisee`) | `realisee` (déjà réalisée), `a_tester` (pas encore testée) ou `a_revoir` (testée, pas convaincante : exclue des rubriques de l'accueil). |
 
 Les valeurs contrôlées inconnues (faute de frappe, nouvelle valeur) sont
 **rejetées** : ajouter d'abord la valeur et son libellé dans

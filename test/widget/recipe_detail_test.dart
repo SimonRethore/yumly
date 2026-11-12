@@ -7,6 +7,7 @@ import 'package:yumly/features/shopping_list/data/shopping_list_repository.dart'
 
 import 'package:yumly/features/recipes/presentation/recipe_card.dart';
 
+import '../helpers/fixtures.dart';
 import '../helpers/test_app.dart';
 
 const nbsp = ' ';
@@ -71,6 +72,20 @@ void main() {
     expect(find.text('À tester'), findsOneWidget);
   });
 
+  testWidgets('recette à revoir : étiquette au-dessus du titre', (
+    tester,
+  ) async {
+    final catalog = const CatalogParser()
+        .parse(File('assets/data/recipes.json').readAsStringSync())
+        .catalog;
+    await pumpYumly(tester, prefs: await freshPrefs(), catalog: catalog);
+    await tester.enterText(find.byType(TextField), 'nouilles au boeuf');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Nouilles au bœuf sauté à la thaï').last);
+    await tester.pumpAndSettle();
+    expect(find.text('À revoir'), findsOneWidget);
+  });
+
   testWidgets('changer le nombre de personnes recalcule les quantités', (
     tester,
   ) async {
@@ -133,6 +148,52 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('1 recette sélectionnée'), findsOneWidget);
     expect(find.text('Pour 5 personnes'), findsOneWidget);
+  });
+
+  testWidgets('recette comptée en pièces : sélecteur, liste de courses', (
+    tester,
+  ) async {
+    final catalog = parseCatalog([
+      recipeJson(
+        'canneles',
+        overrides: {
+          'title': 'Cannelés',
+          'defaultServings': 12,
+          'servingsUnit': {'singular': 'cannelé', 'plural': 'cannelés'},
+        },
+        ingredients: [ing('lait', quantity: 60, unit: 'cl', name: 'Lait')],
+      ),
+    ]);
+    await pumpYumly(tester, prefs: await freshPrefs(), catalog: catalog);
+    await scrollTo(tester, find.text('Toutes les recettes'));
+    await tester.tap(find.text('Cannelés').last);
+    await tester.pumpAndSettle();
+
+    await scrollTo(tester, find.byTooltip('Retirer 1 cannelé'));
+    expect(find.text('12 cannelés'), findsOneWidget);
+    expect(find.text('60${nbsp}cl'), findsOneWidget);
+    await tester.tap(find.byTooltip('Retirer 1 cannelé'));
+    await tester.pump();
+    await tester.tap(find.byTooltip('Retirer 1 cannelé'));
+    await tester.pumpAndSettle();
+    expect(find.text('10 cannelés'), findsOneWidget);
+    expect(find.text('50${nbsp}cl'), findsOneWidget);
+    expect(find.text('Revenir à 12 cannelés'), findsOneWidget);
+
+    final addButton = find.text('Ajouter à la liste de courses');
+    await scrollTo(tester, addButton);
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Ajoutée à la liste de courses (10 cannelés)'),
+      findsOneWidget,
+    );
+    await dismissSnackBars(tester);
+
+    await tester.tap(navTab('Courses'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pour 10 cannelés'), findsOneWidget);
+    expect(find.byTooltip('Ajouter 1 cannelé'), findsOneWidget);
   });
 
   testWidgets('une recette déjà dans la liste s’ouvre avec les portions de '

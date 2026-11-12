@@ -174,12 +174,13 @@ class _EntryTile extends ConsumerWidget {
                       ],
                     ),
                     Text(
-                      'Pour ${servingsLabel(entry.servings)}',
+                      'Pour ${servingsLabel(entry.servings, recipe.servingsUnit)}',
                       style: theme.textTheme.bodySmall,
                     ),
                     const SizedBox(height: 6),
                     ServingsStepper(
                       compact: true,
+                      unit: recipe.servingsUnit,
                       value: entry.servings,
                       onChanged: (value) =>
                           notifier.setServings(recipe.id, value),

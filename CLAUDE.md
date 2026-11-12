@@ -33,11 +33,12 @@ python3 tool/screenshots.py               # README screenshots from a plugged-in
 ## Adding or editing recipes
 
 - Reuse existing `ingredientId`s, and keep `name` and `category` identical for a given `ingredientId` across recipes: the parser warns on mismatches, and `catalog_parser_test` requires zero warnings.
-- Ids are `<slug>-<NNN>` with the next sequential number. New recipes use `"done": false`, which puts them in the home page's « À tester » section.
+- Ids are `<slug>-<NNN>` with the next sequential number. New recipes use `"status": "a_tester"`, which puts them in the home page's « À tester » section. `"a_revoir"` marks a tested recipe the owner wasn't convinced by: it is left out of the home carousels.
 - Photos go in `assets/recipes/<N>-<slug>.jpg`, where `N` is the recipe id number without leading zeros and `slug` the id without its number (`lasagnes-bolognaise-001` → `1-lasagnes-bolognaise.jpg`). They are JPEG, roughly 16:10, and referenced by `imageAsset`. No pubspec change is needed.
 - The recipe count is hard-coded in tests. When adding or removing recipes, update `hasLength(N)` in `test/unit/catalog_parser_test.dart` and the « N recettes » / « Voir N recettes » strings in `test/widget/catalog_screen_test.dart`.
 - `TODO_RECIPES.md` is the backlog of recipes to add. Remove an entry once it is added and update the section count.
 - If a recipe needed a decision or leaves a doubt, add a line to `TODO_REVIEW.md` (see below).
+- For HelloFresh sources, convert box containers ("1 paquet", "½ sachet"), house spice blends and labels with the equivalences in `docs/CONVERSIONS_HELLOFRESH.md`. Update that file with every HelloFresh recipe added or edited: add each new equivalence, add the recipe to the rows it reuses, and list under « À harmoniser » any conversion that contradicts an existing one.
 
 ## `TODO_REVIEW.md`
 

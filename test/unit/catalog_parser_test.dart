@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yumly/features/recipes/data/catalog_parser.dart';
 import 'package:yumly/features/recipes/domain/controlled_values.dart';
+import 'package:yumly/features/recipes/domain/servings_unit.dart';
 import 'package:yumly/features/recipes/domain/unit.dart';
 
 import '../helpers/demo_catalog.dart';
@@ -59,23 +60,59 @@ void main() {
     expect(recipe.ingredients.last.hasQuantity, isFalse);
     expect(recipe.equipment, ['Casserole']);
     expect(recipe.sourceUrl, 'https://example.com/curry');
-    expect(recipe.done, isTrue);
+    expect(recipe.status, RecipeStatus.realisee);
   });
 
-  test('« done » vaut false si précisé', () {
+  test('portions en personnes par défaut, ou en pièces si précisé', () {
     final source = catalogSource([
-      recipeJson('curry', overrides: {'done': false}),
+      recipeJson('curry'),
+      recipeJson(
+        'canneles',
+        overrides: {
+          'defaultServings': 12,
+          'servingsUnit': {'singular': 'cannelé', 'plural': 'cannelés'},
+        },
+      ),
     ]);
-    expect(parser.parse(source).catalog.recipes.single.done, isFalse);
+    final recipes = parser.parse(source).catalog.recipes;
+    expect(recipes.first.servingsUnit, ServingsUnit.personnes);
+    expect(
+      recipes.last.servingsUnit,
+      const ServingsUnit(singular: 'cannelé', plural: 'cannelés'),
+    );
   });
 
-  test('rejette un « done » qui n’est pas un booléen', () {
+  test('rejette une unité de portion incomplète', () {
     final source = catalogSource([
-      recipeJson('curry', overrides: {'done': 'oui'}),
+      recipeJson(
+        'canneles',
+        overrides: {
+          'servingsUnit': {'singular': 'cannelé'},
+        },
+      ),
     ]);
     expect(
       () => parser.parse(source),
-      throwsCatalogError('« done » doit être un booléen.'),
+      throwsCatalogError('« servingsUnit » doit être un objet'),
+    );
+  });
+
+  test('« status » lu si précisé', () {
+    for (final status in RecipeStatus.values) {
+      final source = catalogSource([
+        recipeJson('curry', overrides: {'status': status.id}),
+      ]);
+      expect(parser.parse(source).catalog.recipes.single.status, status);
+    }
+  });
+
+  test('rejette un « status » inconnu', () {
+    final source = catalogSource([
+      recipeJson('curry', overrides: {'status': 'oui'}),
+    ]);
+    expect(
+      () => parser.parse(source),
+      throwsCatalogError('valeur inconnue pour « status » : oui.'),
     );
   });
 
@@ -92,7 +129,7 @@ void main() {
   test('le catalogue intégré est valide', () {
     final source = File('assets/data/recipes.json').readAsStringSync();
     final result = parser.parse(source);
-    expect(result.catalog.recipes, hasLength(55));
+    expect(result.catalog.recipes, hasLength(69));
     expect(result.catalog.isDemo, isFalse);
     expect(result.warnings, isEmpty);
   });

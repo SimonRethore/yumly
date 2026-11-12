@@ -34,7 +34,7 @@ void addRecipeWithServings(
   final result = ref
       .read(shoppingListProvider.notifier)
       .addOrUpdate(recipe.id, servings);
-  final label = servingsLabel(servings);
+  final label = servingsLabel(servings, recipe.servingsUnit);
   _showSnack(context, switch (result) {
     AddToListResult.added => 'Ajoutée à la liste de courses ($label)',
     AddToListResult.updated => 'Portions mises à jour : $label',
@@ -50,7 +50,7 @@ void addRecipeFromCard(BuildContext context, WidgetRef ref, Recipe recipe) {
   if (existing != null) {
     _showSnack(
       context,
-      'Déjà dans la liste de courses (${servingsLabel(existing.servings)})',
+      'Déjà dans la liste de courses (${servingsLabel(existing.servings, recipe.servingsUnit)})',
     );
     return;
   }

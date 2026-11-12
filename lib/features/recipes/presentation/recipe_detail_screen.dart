@@ -152,6 +152,7 @@ class _RecipeDetailState extends ConsumerState<_RecipeDetail> {
                   children: [
                     ServingsStepper(
                       value: _servings,
+                      unit: recipe.servingsUnit,
                       onChanged: (value) => setState(
                         () => _servings = ServingsLimits.clamp(value),
                       ),
@@ -161,7 +162,7 @@ class _RecipeDetailState extends ConsumerState<_RecipeDetail> {
                         onPressed: () =>
                             setState(() => _servings = recipe.defaultServings),
                         child: Text(
-                          'Revenir à ${servingsLabel(recipe.defaultServings)}',
+                          'Revenir à ${servingsLabel(recipe.defaultServings, recipe.servingsUnit)}',
                         ),
                       ),
                   ],
@@ -228,7 +229,7 @@ class _SectionTitle extends StatelessWidget {
   );
 }
 
-/// Étiquette « À tester » au-dessus du titre, aux couleurs du ruban des
+/// Étiquette « À tester » ou « À revoir » au-dessus du titre, aux couleurs du ruban des
 /// cartes.
 class _StatusLabel extends StatelessWidget {
   const _StatusLabel(this.label);

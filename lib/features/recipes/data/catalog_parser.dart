@@ -4,6 +4,7 @@ import '../domain/controlled_values.dart';
 import '../domain/ingredient.dart';
 import '../domain/recipe.dart';
 import '../domain/recipe_step.dart';
+import '../domain/servings_unit.dart';
 import '../domain/unit.dart';
 
 /// Erreur de catalogue : le JSON intégré est invalide. Contient la liste
@@ -126,11 +127,12 @@ class CatalogParser {
     final cook = r.nonNegativeInt('cookTimeMinutes');
     final rest = r.nonNegativeInt('restTimeMinutes');
     final servings = r.positiveInt('defaultServings');
+    final servingsUnit = r.servingsUnit('servingsUnit');
     final ingredients = _parseIngredients(r);
     final steps = _parseSteps(r);
     final equipment = r.stringList('equipment');
     final sourceUrl = r.optionalHttpUrl('sourceUrl');
-    final done = r.optionalBool('done', defaultValue: true);
+    final status = r.optionalControlled('status', RecipeStatus.fromId);
 
     if (r.errors.length != errorCount ||
         id == null ||
@@ -153,11 +155,12 @@ class CatalogParser {
       cookTimeMinutes: cook,
       restTimeMinutes: rest,
       defaultServings: servings,
+      servingsUnit: servingsUnit,
       ingredients: ingredients,
       steps: steps,
       equipment: equipment,
       sourceUrl: sourceUrl,
-      done: done,
+      status: status ?? RecipeStatus.realisee,
     );
   }
 
@@ -313,6 +316,26 @@ class _Reader {
     final before = errors.length;
     final value = _int(key, min: 1, required: true);
     return errors.length == before ? value : null;
+  }
+
+  /// `{ "singular": "cannelé", "plural": "cannelés" }` ; absent → personnes.
+  ServingsUnit servingsUnit(String key) {
+    final value = _map[key];
+    if (value == null) return ServingsUnit.personnes;
+    if (value is Map<String, Object?>) {
+      final singular = value['singular'];
+      final plural = value['plural'];
+      if (singular is String &&
+          singular.trim().isNotEmpty &&
+          plural is String &&
+          plural.trim().isNotEmpty) {
+        return ServingsUnit(singular: singular.trim(), plural: plural.trim());
+      }
+    }
+    error(
+      '« $key » doit être un objet { "singular": texte, "plural": texte }.',
+    );
+    return ServingsUnit.personnes;
   }
 
   double? optionalNonNegativeNumber(String key) {

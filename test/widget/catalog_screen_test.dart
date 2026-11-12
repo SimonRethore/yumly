@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yumly/core/widgets/recipe_image.dart';
 import 'package:yumly/features/recipes/data/catalog_parser.dart';
+import 'package:yumly/features/recipes/domain/controlled_values.dart';
 import 'package:yumly/features/recipes/domain/recipe.dart';
 import 'package:yumly/features/recipes/presentation/recipe_card.dart';
 
@@ -24,8 +25,8 @@ void main() {
       // (horloge des tests au 10 octobre).
       expect(find.text('De saison'), findsOneWidget);
       // Le compteur est sous les rubriques de l'accueil.
-      await scrollTo(tester, find.text('55 recettes'));
-      expect(find.text('55 recettes'), findsOneWidget);
+      await scrollTo(tester, find.text('69 recettes'));
+      expect(find.text('69 recettes'), findsOneWidget);
       // Ordre alphabétique par défaut : les cartes sont plus bas.
       await scrollTo(tester, find.widgetWithText(RecipeCard, 'Flammekueche'));
       await scrollTo(
@@ -35,7 +36,9 @@ void main() {
     },
   );
 
-  testWidgets('recette à tester : ruban sur la photo', (tester) async {
+  testWidgets('recette à tester ou à revoir : ruban sur la photo', (
+    tester,
+  ) async {
     // Catalogue intégré lu directement : le chargeur d'assets ne se relance
     // pas dans un second test du même fichier.
     final catalog = const CatalogParser()
@@ -50,6 +53,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Brioche perdue'), findsOneWidget);
     expect(ribbon('À tester'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'nouilles au boeuf');
+    await tester.pumpAndSettle();
+    expect(find.text('Nouilles au bœuf sauté à la thaï'), findsOneWidget);
+    expect(ribbon('À revoir'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), 'lasagnes');
     await tester.pumpAndSettle();
@@ -221,6 +229,31 @@ void main() {
     expect(find.text('8 recettes'), findsOneWidget);
   });
 
+  testWidgets('« De saison » exclut les recettes à revoir', (tester) async {
+    final catalog = const CatalogParser()
+        .parse(File('assets/data/recipes.json').readAsStringSync())
+        .catalog;
+    // Juillet : les nouilles au bœuf à la thaï (à revoir) sont de saison.
+    await pumpYumly(
+      tester,
+      prefs: await freshPrefs(),
+      catalog: catalog,
+      now: DateTime(2026, 7, 1),
+    );
+    final expected = catalog.recipes.where(
+      (r) => r.months.contains(7) && r.status != RecipeStatus.aRevoir,
+    );
+    await scrollTo(tester, find.text('De saison'));
+    final seasonal = carouselCards('De saison');
+    expect(seasonal, findsNWidgets(expected.length));
+    expect(
+      tester
+          .widgetList<RecipeCard>(seasonal)
+          .any((c) => c.recipe.status == RecipeStatus.aRevoir),
+      isFalse,
+    );
+  });
+
   testWidgets('section « De saison » calculée depuis les mois', (tester) async {
     await pumpYumly(
       tester,
@@ -248,10 +281,14 @@ void main() {
     await pumpYumly(tester, prefs: await freshPrefs(), catalog: catalog);
     final toTest = carouselCards('À tester');
     await scrollTo(tester, find.text('À tester'));
-    final undone = catalog.recipes.where((r) => !r.done).toList();
+    final undone = catalog.recipes
+        .where((r) => r.status == RecipeStatus.aTester)
+        .toList();
     expect(toTest, findsNWidgets(undone.length));
     expect(
-      tester.widgetList<RecipeCard>(toTest).every((c) => !c.recipe.done),
+      tester
+          .widgetList<RecipeCard>(toTest)
+          .every((c) => c.recipe.status == RecipeStatus.aTester),
       isTrue,
     );
 
@@ -302,7 +339,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(ChoiceChip, label));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Voir 55 recettes'));
+      await tester.tap(find.text('Voir 69 recettes'));
       await tester.pumpAndSettle();
     }
 
@@ -317,6 +354,6 @@ void main() {
     expect(await firstCard(), catalog.recipes.first.title);
 
     await choose('Alphabétique inversé');
-    expect(await firstCard(), 'Tartines avocat et œuf mollet');
+    expect(await firstCard(), 'Wok de nouilles sautées sauce cacahuètes');
   });
 }

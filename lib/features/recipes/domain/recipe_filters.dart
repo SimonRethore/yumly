@@ -27,21 +27,6 @@ enum CookTimeRange implements ControlledValue {
       values.firstWhere((range) => range.contains(minutes));
 }
 
-/// Statut de réalisation d'une recette (champ `done` du catalogue).
-enum RecipeStatus implements ControlledValue {
-  realisee('realisee', 'Déjà réalisée'),
-  aTester('a_tester', 'À tester');
-
-  const RecipeStatus(this.id, this.label);
-
-  @override
-  final String id;
-  @override
-  final String label;
-
-  static RecipeStatus of(Recipe recipe) => recipe.done ? realisee : aTester;
-}
-
 /// Critères de recherche et de filtrage. Les valeurs d'une même famille se
 /// combinent en OU, les familles entre elles en ET.
 class RecipeFilters {
@@ -133,7 +118,7 @@ class RecipeFilters {
         !cookTimes.contains(CookTimeRange.of(recipe.cookTimeMinutes))) {
       return false;
     }
-    if (statuses.isNotEmpty && !statuses.contains(RecipeStatus.of(recipe))) {
+    if (statuses.isNotEmpty && !statuses.contains(recipe.status)) {
       return false;
     }
     return _matchesQuery(recipe);
@@ -188,7 +173,7 @@ class FilterOptions {
       seasons.addAll(recipe.seasons);
       if (recipe.difficulty != null) difficulties.add(recipe.difficulty!);
       cookTimes.add(CookTimeRange.of(recipe.cookTimeMinutes));
-      statuses.add(RecipeStatus.of(recipe));
+      statuses.add(recipe.status);
     }
 
     List<T> inEnumOrder<T extends Enum>(Set<T> set) =>

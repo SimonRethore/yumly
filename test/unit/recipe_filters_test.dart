@@ -53,7 +53,7 @@ void main() {
         'origin': 'Mexicain',
         'course': 'dessert',
         'cookTimeMinutes': 10,
-        'done': false,
+        'status': 'a_tester',
       },
     ),
   ]);

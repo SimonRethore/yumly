@@ -1,8 +1,10 @@
 import 'controlled_values.dart';
 import 'ingredient.dart';
 import 'recipe_step.dart';
+import 'servings_unit.dart';
 
-/// Nombre de personnes autorisé pour une recette ou une entrée de liste.
+/// Nombre de portions (personnes ou pièces) autorisé pour une recette ou une
+/// entrée de liste.
 abstract final class ServingsLimits {
   static const int min = 1;
   static const int max = 100;
@@ -32,7 +34,8 @@ class Recipe {
     this.restTimeMinutes = 0,
     this.equipment = const [],
     this.sourceUrl,
-    this.done = true,
+    this.status = RecipeStatus.realisee,
+    this.servingsUnit = ServingsUnit.personnes,
   });
 
   final String id;
@@ -49,6 +52,9 @@ class Recipe {
   final int cookTimeMinutes;
   final int restTimeMinutes;
   final int defaultServings;
+
+  /// Unité de [defaultServings] : personnes, ou pièces (« cannelés »).
+  final ServingsUnit servingsUnit;
   final List<Ingredient> ingredients;
 
   /// Étapes triées par `order` au chargement.
@@ -58,13 +64,13 @@ class Recipe {
   /// Lien vers la recette d'origine (http ou https).
   final String? sourceUrl;
 
-  /// Recette déjà réalisée (vrai par défaut).
-  final bool done;
+  /// Déjà réalisée (par défaut), à tester ou à revoir.
+  final RecipeStatus status;
 
   int get totalTimeMinutes =>
       prepTimeMinutes + cookTimeMinutes + restTimeMinutes;
 
-  /// Coefficient de mise à l'échelle pour [servings] personnes.
+  /// Coefficient de mise à l'échelle pour [servings] portions.
   double coefficientFor(int servings) => servings / defaultServings;
 
   Recipe copyWithImage(String? imageAsset) => Recipe(
@@ -82,11 +88,12 @@ class Recipe {
     cookTimeMinutes: cookTimeMinutes,
     restTimeMinutes: restTimeMinutes,
     defaultServings: defaultServings,
+    servingsUnit: servingsUnit,
     ingredients: ingredients,
     steps: steps,
     equipment: equipment,
     sourceUrl: sourceUrl,
-    done: done,
+    status: status,
   );
 }
 

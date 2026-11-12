@@ -17,7 +17,7 @@ class Ingredient {
   final String name;
   final IngredientCategory category;
 
-  /// Quantité de base pour `defaultServings` personnes ; `null` si non
+  /// Quantité de base pour `defaultServings` portions ; `null` si non
   /// définie (dans ce cas [unit] est aussi `null`).
   final double? quantity;
   final Unit? unit;
